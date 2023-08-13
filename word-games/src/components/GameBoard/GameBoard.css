@@ -9,3 +9,7 @@
     background-color: red; /* Add this line for the red background */
     padding: 20px; /* Add some padding for spacing */
 }
+.matched-tile {
+    opacity: 0.3; 
+    pointer-events: none; 
+}
