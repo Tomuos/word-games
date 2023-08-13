@@ -1,7 +1,11 @@
+/* src/components/GameBoard/GameBoard.css */
+
 .game-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);  /* <-- Adjusted here */
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     max-width: 800px;
     margin: 0 auto;
+    background-color: red; /* Add this line for the red background */
+    padding: 20px; /* Add some padding for spacing */
 }

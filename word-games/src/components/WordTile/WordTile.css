@@ -11,7 +11,11 @@
     transition: background-color 0.3s;
     font-size: 16px;
 }
-  
+
+.word-tile.selected {
+    background-color: yellow; /* Set background color to yellow for selected pairs */
+}
+
 .word-tile:hover {
     background-color: #ddd;
 }

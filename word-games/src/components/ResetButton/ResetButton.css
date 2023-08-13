@@ -1,0 +1,16 @@
+/* src/components/ResetButton/ResetButton.css */
+
+.reset-button {
+    background-color: blue; /* Set the background color to blue */
+    color: white; /* Set the text color to white */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.reset-button:hover {
+    background-color: #0073e6; /* Darker blue on hover */
+}
