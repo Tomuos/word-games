@@ -47,7 +47,7 @@ function GameBoard() {
             setSelectedTiles([]); // Clear selected tiles
             setIsEvaluating(false); // Reset evaluation state
           }, 1000);
-          setPoints(points - 5);
+          setPoints(points - 1);
         }
       }
     }
@@ -71,14 +71,15 @@ function GameBoard() {
     <div>
       <ScoreDisplay score={points} />
       <div className="game-board">
-        {shuffledWords.map((word, index) => (
-          <WordTile 
-            key={index} 
-            word={word} 
-            isRevealed={selectedTiles.some(t => t.index === index) || matchedPairs.includes(word)}
-            onClick={() => handleTileClick(index, word)}
-          />
-        ))}
+      {shuffledWords.map((word, index) => (
+    <WordTile 
+        key={index} 
+        word={word} 
+        className={matchedPairs.includes(word) ? 'matched-tile' : ''}
+        isRevealed={selectedTiles.some(t => t.index === index) || matchedPairs.includes(word)}
+        onClick={() => handleTileClick(index, word)}
+    />
+))}
       </div>
       <ResetButton onClick={restartGame} />
     </div>

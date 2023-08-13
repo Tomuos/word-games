@@ -3,11 +3,11 @@
 import React from 'react';
 import './WordTile.css';
 
-function WordTile({ word, isRevealed, onClick }) {
+function WordTile({ word, isRevealed, onClick, className }) {
   return (
-    <div className={`word-tile ${isRevealed ? 'selected' : ''}`} onClick={onClick}>
-      {isRevealed ? word : '?'}
-    </div>
+      <div className={`word-tile ${className}`} onClick={onClick}>
+          {isRevealed ? word : '?'}
+      </div>
   );
 }
 
