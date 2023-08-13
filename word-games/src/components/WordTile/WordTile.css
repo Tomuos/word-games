@@ -1,7 +1,9 @@
 /* src/components/WordTile/WordTile.css */
 
 .word-tile {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px 20px;
     margin: 5px;
     background-color: #eaeaea;
@@ -9,7 +11,10 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-size: 16px;
+    width: 120px; 
+    height: 120px;
+    font-size: 44px;
+    font-weight: bold;
 }
 
 .word-tile.selected {

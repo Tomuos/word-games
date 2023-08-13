@@ -2,6 +2,6 @@
 
 .score-display {
     color: blue; /* Set the text color to blue */
-    font-size: 18px; /* Increase font size for better visibility */
+    font-size: 28px; /* Increase font size for better visibility */
     margin-bottom: 10px; /* Add some spacing below the score display */
 }

@@ -2,12 +2,13 @@
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     max-width: 800px;
     margin: 0 auto;
     background-color: red; /* Add this line for the red background */
     padding: 20px; /* Add some padding for spacing */
+    width: 720px; /* Set the width to 600px */
 }
 .matched-tile {
     opacity: 0.3; 
