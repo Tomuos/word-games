@@ -1,5 +1,3 @@
-// src/components/GameBoard/GameBoard.js
-
 import React, { useState, useEffect } from 'react';
 import WordTile from '../WordTile/WordTile';
 import ScoreDisplay from '../ScoreDisplay/ScoreDisplay';
@@ -18,29 +16,29 @@ function GameBoard() {
   ];
   const flattenedWords = wordPairs.flat();
 
-  const [shuffledWords, setShuffledWords] = useState([]);
+  const [shuffledWords, setShuffledWords] = useState(flattenedWords.sort(() => 0.5 - Math.random()));
   const [selectedTiles, setSelectedTiles] = useState([]);
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [points, setPoints] = useState(0);
   const [isEvaluating, setIsEvaluating] = useState(false);
 
-  useEffect(() => {
-    setShuffledWords(flattenedWords.sort(() => 0.5 - Math.random()));
-  }, [flattenedWords]);
+  const isRhymingPair = (word1, word2) => {
+    return wordPairs.some(pair => (pair.includes(word1) && pair.includes(word2))) && word1 !== word2;
+  }
 
   const handleTileClick = (index, word) => {
-    if (isEvaluating || selectedTiles.length === 2) return;
-  
+    if (isEvaluating || selectedTiles.length === 2 || matchedPairs.includes(word)) return;
+
     const tileAlreadySelected = selectedTiles.find(t => t.index === index);
-  
+
     if (!tileAlreadySelected) {
       const newSelectedTiles = [...selectedTiles, { index, word }];
       setSelectedTiles(newSelectedTiles);
-  
+
       if (newSelectedTiles.length === 2) {
         const [firstTile, secondTile] = newSelectedTiles;
-        if (firstTile.word === secondTile.word) {
-          setMatchedPairs([...matchedPairs, word]);
+        if (isRhymingPair(firstTile.word, secondTile.word)) {
+          setMatchedPairs(prevPairs => [...prevPairs, firstTile.word, secondTile.word]);
           setPoints(points + 10);
           setSelectedTiles([]); // Clear selected tiles
         } else {
@@ -54,7 +52,6 @@ function GameBoard() {
       }
     }
   };
-  
 
   const restartGame = () => {
     setShuffledWords(flattenedWords.sort(() => 0.5 - Math.random()));
@@ -65,7 +62,7 @@ function GameBoard() {
   };
 
   useEffect(() => {
-    if (matchedPairs.length === wordPairs.length) {
+    if (matchedPairs.length === wordPairs.length * 2) {
       alert(`Game complete! Your score is: ${points}`);
     }
   }, [matchedPairs, points, wordPairs.length]);
