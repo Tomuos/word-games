@@ -1,19 +1,14 @@
-import { useDrag } from 'react-dnd';
+import DraggableLetter from './DraggableLetter';
 
-function DraggableLetter({ letter }) {
-    const [{ isDragging }, drag] = useDrag({
-        type: "LETTER",
-        item: { letter },
-        collect: (monitor) => ({
-            isDragging: !!monitor.isDragging(),
-        }),
-    });
-
+function LetterPool({ letters }) {
     return (
-        <span ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
-            {letter}
-        </span>
+        <div className="letter-pool">
+            {letters.map((letter, index) => (
+                <DraggableLetter key={index} letter={letter} />
+            ))}
+        </div>
     );
 }
+
 
 export default DraggableLetter;
