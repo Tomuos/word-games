@@ -46,7 +46,7 @@ function GameBoard() {
           setTimeout(() => {
             setSelectedTiles([]); // Clear selected tiles
             setIsEvaluating(false); // Reset evaluation state
-          }, 1000);
+          }, 2000);
           setPoints(points - 1);
         }
       }
