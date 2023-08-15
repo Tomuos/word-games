@@ -18,3 +18,41 @@
     font-size: 2rem;  /* adjust the font-size to fit well within the box */
     font-weight: bold;
 }
+
+.letter {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);  /* adjust the values accordingly */
+}
+
+.letter-pool {
+    gap: 2%;  /* use percentage or other relative units for gaps */
+}
+
+.letter {
+    aspect-ratio: 2 / 1;  /* height is twice the width */
+}
+
+.letter-pool {
+    max-width: 1200px; /* adjust as necessary */
+    margin: 0 auto; /* center the letter pool on the page */
+}
+
+
+@media screen and (max-width: 950px) { /* tablet breakpoint */
+    .letter-pool {
+        grid-template-columns: repeat(7, 1fr);  /* split into more rows for tablets */
+    }
+    
+    .letter {
+        width: 4rem;  /* shrink the box a bit */
+        height: 7rem;
+        font-size: 1.8rem;  /* adjust font size for the smaller box */
+    }
+}
+
+@media screen and (max-width: 480px) { /* mobile breakpoint */
+    .letter {
+        width: 3rem;
+        height: 5.5rem;
+        font-size: 1.5rem;
+    }
+}
