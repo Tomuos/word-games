@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
 function ControlPanel() {
-    return (
-        <div className="control-panel">
-            {/* Game controls go here */}
-        </div>
-    );
+  return <div className="control-panel">{/* Game controls go here */}</div>;
 }
 
 export default ControlPanel;
