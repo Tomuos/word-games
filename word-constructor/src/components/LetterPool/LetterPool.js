@@ -1,4 +1,6 @@
 import React from 'react';
+import './LetterPool.css';
+
 // LETTER POOL COMPONENT should contain all the letters of the alphabet
 function LetterPool() {
     return (
