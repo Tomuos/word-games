@@ -19,40 +19,122 @@
     font-weight: bold;
 }
 
-.letter {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);  /* adjust the values accordingly */
+.letter-pool-container {
+    max-width: 1200px; /* Example, adjust based on ideal width for your layout */
+    margin: 0 auto;   /* Centers the container if it's less than the viewport width */
 }
+
 
 .letter-pool {
-    gap: 2%;  /* use percentage or other relative units for gaps */
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);  /* 26 letters in 2 rows = 13 letters per row */
+    gap: 10px;  /* spacing between letters */
+    transition: transform 0.3s; /* smoothens scaling effect */
 }
 
-.letter {
-    aspect-ratio: 2 / 1;  /* height is twice the width */
-}
-
-.letter-pool {
-    max-width: 1200px; /* adjust as necessary */
-    margin: 0 auto; /* center the letter pool on the page */
-}
-
-
-@media screen and (max-width: 950px) { /* tablet breakpoint */
-    .letter-pool {
-        grid-template-columns: repeat(7, 1fr);  /* split into more rows for tablets */
-    }
-    
+@media screen and (max-width: 950px) {
     .letter {
-        width: 4rem;  /* shrink the box a bit */
-        height: 7rem;
-        font-size: 1.8rem;  /* adjust font size for the smaller box */
+        width: 4.5rem;
+        height: 8.5rem;
+        font-size: 1.8rem;
     }
 }
 
-@media screen and (max-width: 480px) { /* mobile breakpoint */
+@media screen and (max-width: 800px) {
+    .letter {
+        width: 4rem;
+        height: 8rem;
+        font-size: 1.6rem;
+    }
+    .letter-pool {
+        gap: 8px;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .letter {
+        width: 3.5rem;
+        height: 7.5rem;
+        font-size: 1.4rem;
+    }
+    .letter-pool {
+        gap: 7px;
+        padding: 12px;
+    }
+}
+
+@media screen and (max-width: 600px) {
     .letter {
         width: 3rem;
-        height: 5.5rem;
-        font-size: 1.5rem;
+        height: 7rem;
+        font-size: 1.2rem;
+    }
+    .letter-pool {
+        gap: 6px;
+        padding: 10px;
     }
 }
+
+@media screen and (max-width: 500px) {
+    .letter {
+        width: 2.5rem;
+        height: 6.5rem;
+        font-size: 1rem;
+    }
+    .letter-pool {
+        gap: 5px;
+        padding: 8px;
+    }
+}
+
+
+.word-slots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+.slot {
+    border: 3px dashed #000;
+    width: 5rem;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    background: #EDEDED;  /* Lighter background to differentiate from the letters */
+}
+
+/* For smaller screens, reduce the size and spacing */
+@media screen and (max-width: 950px) {
+    .slot {
+        width: 4rem;
+        height: 8rem;
+        font-size: 1.8rem;
+    }
+    .word-slots {
+        gap: 8px;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .slot {
+        width: 3rem;
+        height: 7rem;
+        font-size: 1.4rem;
+    }
+    .word-slots {
+        gap: 6px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
