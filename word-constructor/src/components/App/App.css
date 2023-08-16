@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+
+.word-slots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.hint {
+  color: red;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
