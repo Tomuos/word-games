@@ -1,0 +1,13 @@
+.isLetter{
+    cursor: pointer;
+}
+
+.letter {
+    transition: transform 0.3s, background-color 0.3s;  /* Smoothens the hover effect */
+    cursor: pointer;  /* Changes the cursor to a hand pointer on hover */
+}
+
+.letter:hover {
+    transform: scale(1.05);  /* Slightly enlarges the letter on hover */
+    background-color: #E5E0C1;  /* Changes the background color slightly on hover */
+}

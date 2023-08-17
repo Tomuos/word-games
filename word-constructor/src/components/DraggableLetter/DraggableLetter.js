@@ -1,5 +1,5 @@
 import { useDrag } from 'react-dnd';
-
+import './DraggableLetter.css'
 
 function DraggableLetter({ letter }) {
   const [{ isDragging }, drag] = useDrag({
