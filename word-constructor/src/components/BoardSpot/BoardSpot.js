@@ -1,20 +1,24 @@
 import { useDrop } from 'react-dnd';
 
 function BoardSpot({ onDropLetter }) {
-    const [{ isOver, canDrop }, drop] = useDrop({
+    const [{ isOver }, drop, item] = useDrop({
         accept: "LETTER",
-        drop: (item) => onDropLetter(item.letter),
+        drop: (item) => {
+            onDropLetter(item.letter);
+            return { id: item.id };
+        },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
-            canDrop: monitor.canDrop(),
+            item: monitor.getItem(),
         }),
     });
 
     return (
         <div ref={drop} style={{ background: isOver ? 'lightblue' : 'white' }}>
-            {/* This will show the letter once it's dropped or can be empty */}
+            {isOver && item && <div className="letter">{item.letter}</div>}
         </div>
     );
 }
 
 export default BoardSpot;
+

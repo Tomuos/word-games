@@ -1,18 +1,20 @@
 import React from 'react';
 import './LetterPool.css';
+import DraggableLetter from './DraggableLetter'; // Make sure you have this import.
 
 // LETTER POOL COMPONENT should contain all the letters of the alphabet
 function LetterPool() {
     return (
         <div className="letter-pool-container">
-            <div className="letter-pool">
-                { "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter, index) => {
-                    return <div key={index} className="letter">{letter}</div>
-                })}
-            </div>
+          <div className="letter-pool">
+            { "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter, index) => {
+                return <DraggableLetter key={index} letter={letter} />
+            })}
+          </div>
         </div>
-    );
+      );
 }
+
 
 
 export default LetterPool;
