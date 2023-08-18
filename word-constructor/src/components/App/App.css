@@ -50,3 +50,11 @@
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
+
+.word-image {
+  width: 200px;  /* Adjust as needed */
+  height: auto;
+  display: block;
+  margin: 20px auto;  /* centers the image and gives space above and below */
+}
+

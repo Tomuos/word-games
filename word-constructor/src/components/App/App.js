@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import './App.css';
 import GameBoard from "../GameBoard/GameBoard";
 import LetterPool from "../LetterPool/LetterPool";
 import ControlPanel from "../ControlPanel/ControlPanel";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BoardSpot from "../BoardSpot/BoardSpot";
+import appleImage from '../../assets/images/apple.png';
+
 
 function App() {
     // I made a temporary word array to pass to the gameboard component
@@ -40,7 +43,8 @@ function App() {
                 <GameBoard word={word} />
                 <LetterPool />
             </div>
-                <img src="../../assets/images/apple.png" alt="Apple" className="word-image"/>
+            <img src={appleImage} alt="Apple" className="word-image"/>
+
         </DndProvider>
     );
 }
