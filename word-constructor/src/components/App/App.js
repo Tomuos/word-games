@@ -40,6 +40,7 @@ function App() {
                 <GameBoard word={word} />
                 <LetterPool />
             </div>
+                <img src="../../assets/images/apple.png" alt="Apple" className="word-image"/>
         </DndProvider>
     );
 }
