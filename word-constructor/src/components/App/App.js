@@ -36,10 +36,11 @@ function App() {
                 {showHint && <div className="hint">Drag the letters to form the word!</div>}
                 <ControlPanel />
                 <div className="word-slots">
-                    {Array.from(currentWord).map((_, index) => (
-                        <BoardSpot key={index} onDropLetter={handleDropLetter} />
-                    ))}
+                {Array.from(currentWord).map((_, index) => (
+                <BoardSpot key={index} onDropLetter={handleDropLetter} />
+                ))}
                 </div>
+
                 <GameBoard word={word} />
                 <LetterPool />
             </div>
