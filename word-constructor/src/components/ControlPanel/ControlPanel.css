@@ -1,0 +1,16 @@
+ /* ./src/components/ControlPanel/ControlPanel.css */
+.control-panel {
+  display: flex;
+  gap: 15px; /* or whatever spacing you want between icons */
+  justify-content: center; /* center align horizontally */
+  align-items: center; /* center align vertically */
+}
+
+.control-panel i {
+  font-size: 24px; /* adjust the size as you need */
+  cursor: pointer;
+}
+
+.control-panel i:hover {
+  color: gray; /* change color on hover for better UX */
+}
