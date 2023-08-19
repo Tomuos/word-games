@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import './App.css';
 import GameBoard from "../GameBoard/GameBoard";
 import LetterPool from "../LetterPool/LetterPool";
@@ -12,33 +12,32 @@ import 'font-awesome/css/font-awesome.min.css';
 
 
 function App() {
-    // I made a temporary word array to pass to the gameboard component
-    // to fix the vaguely worded error - item is undefined
     const word = ["word", "word2", "word3", "word4"];
-    const [currentWord, setCurrentWord] = useState("APPLE"); // This is just an example word to start with.
+    const [currentWord, setCurrentWord] = useState("APPLE");
     const [showHint, setShowHint] = useState(false);
+    const [isMuted, setIsMuted] = useState(false);
+    const audioRef = useRef(new Audio("../../assets/audio/Apple.m4a"));
 
     const handleDropLetter = (letter) => {
-        // Handle what happens when a letter is dropped.
-        // For instance, check if the word is being formed correctly.
-        // This is a placeholder and should be expanded based on the game's requirements.
+        // Handle the dropped letter here.
     };
 
     const playAudio = () => {
-        const audio = new Audio("/path_to_assets/apple.mp3"); // Replace with the actual path to your audio file.
-        audio.play();
-        audio.onended = () => {
+        audioRef.current.play();
+        audioRef.current.onended = () => {
             setShowHint(true);
         };
     };
-    const [isMuted, setIsMuted] = useState(false);
 
     const toggleMute = () => {
-        setIsMuted(!isMuted);
-        if (typeof audio !== "undefined") {
-            audio.muted = isMuted;
-        }
+        setIsMuted(prevMuted => {
+            const nextMuted = !prevMuted;
+            audioRef.current.muted = nextMuted;
+            return nextMuted;
+        });
     };
+
+  
 
     return (
         <DndProvider backend={HTML5Backend}>
