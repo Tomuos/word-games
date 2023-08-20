@@ -6,7 +6,9 @@ import ControlPanel from "../ControlPanel/ControlPanel";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BoardSpot from "../BoardSpot/BoardSpot";
-import appleImage from '../../assets/images/apple.png';
+import appleImage from '../../assets/images/apple.png'; 
+ 
+
 import 'font-awesome/css/font-awesome.min.css';
 
 
@@ -44,6 +46,7 @@ function App() {
             <div className="app">
                 {showHint && <div className="hint">Drag the letters to form the word!</div>}
                 <ControlPanel playAudio={playAudio} isMuted={isMuted} toggleMute={toggleMute} />
+                
                 <div className="word-slots">
                 {Array.from(currentWord).map((_, index) => (
                 <BoardSpot key={index} onDropLetter={handleDropLetter} />
