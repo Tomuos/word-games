@@ -18,3 +18,16 @@
     font-weight: bold;
     background: #EDEDED;  /* Lighter background to differentiate from the letters */
 }
+
+.tile {
+    border: 3px solid #000;
+    background: #DAD3BB;
+    width: 5rem;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    user-select: none; /* Prevent text selection for a more polished interaction */
+  }
