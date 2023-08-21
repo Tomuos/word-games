@@ -21,9 +21,17 @@ function App() {
     const [isMuted, setIsMuted] = useState(false);
     const audioRef = useRef(new Audio(appleAudio));
 
-    const handleDropLetter = (letter) => {
-        // Handle the dropped letter here.
-    };
+    const [placedLetters, setPlacedLetters] = useState(Array(currentWord.length).fill(null));
+
+  const isCorrect = (index) => {
+    return placedLetters[index] === currentWord[index];
+  };
+
+  const handleDropLetter = (letter, index) => {
+    const newPlacedLetters = [...placedLetters];
+    newPlacedLetters[index] = letter;
+    setPlacedLetters(newPlacedLetters);
+  };
 
     const playAudio = () => {
         audioRef.current.play();
@@ -49,15 +57,16 @@ function App() {
                 <ControlPanel playAudio={playAudio} isMuted={isMuted} toggleMute={toggleMute} />
                 
                 <div className="word-slots">
-                {Array.from(currentWord).map((_, index) => (
-                <BoardSpot key={index} onDropLetter={handleDropLetter} />
+                {Array.from(currentWord).map((letter, index) => (
+                <BoardSpot key={index} letter={letter} correct={isCorrect(index)} onDropLetter={(droppedLetter) => handleDropLetter(droppedLetter, index)} />
                 ))}
                 </div>
 
-                <GameBoard word={word} />
+                <img src={appleImage} alt="Apple" className="word-image"/>
+
+                {/* <GameBoard word={word} /> */}
                 <LetterPool />
             </div>
-            <img src={appleImage} alt="Apple" className="word-image"/>
 
         </DndProvider>
     );

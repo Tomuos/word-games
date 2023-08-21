@@ -1,0 +1,20 @@
+/* ./src/components/BoardSpot/BoardSpot.css */
+.word-slots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+.slot {
+    border: 3px dashed #000;
+    width: 5rem;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    background: #EDEDED;  /* Lighter background to differentiate from the letters */
+}

@@ -2,15 +2,22 @@
 .control-panel {
   display: flex;
   gap: 15px; /* or whatever spacing you want between icons */
-  justify-content: center; /* center align horizontally */
+  justify-content: space-between; /* center align horizontally */
   align-items: center; /* center align vertically */
+  max-width: 1200px; /* Example, adjust based on ideal width for your layout */
+    margin: 0 auto; 
 }
 
 .control-panel i {
-  font-size: 24px; /* adjust the size as you need */
+  font-size: 120px; /* adjust the size as you need */
+  justify-content: space-between;
   cursor: pointer;
 }
 
 .control-panel i:hover {
   color: gray; /* change color on hover for better UX */
+}
+
+.fa-play {
+  font-size: 80px; /* Increase as needed */
 }

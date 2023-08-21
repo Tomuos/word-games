@@ -58,3 +58,10 @@
   margin: 20px auto;  /* centers the image and gives space above and below */
 }
 
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}
