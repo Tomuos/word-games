@@ -6,7 +6,8 @@ import ControlPanel from "../ControlPanel/ControlPanel";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BoardSpot from "../BoardSpot/BoardSpot";
-import appleImage from '../../assets/images/apple.png'; 
+import appleImage from '../../assets/images/apple.png';
+import appleAudio from '../../assets/audio/Apple.m4a'; 
  
 
 import 'font-awesome/css/font-awesome.min.css';
@@ -18,7 +19,7 @@ function App() {
     const [currentWord, setCurrentWord] = useState("APPLE");
     const [showHint, setShowHint] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
-    const audioRef = useRef(new Audio("../../assets/audio/Apple.m4a"));
+    const audioRef = useRef(new Audio(appleAudio));
 
     const handleDropLetter = (letter) => {
         // Handle the dropped letter here.
