@@ -1,23 +1,26 @@
- /* ./src/components/ControlPanel/ControlPanel.css */
 .control-panel {
   display: flex;
-  gap: 15px; /* or whatever spacing you want between icons */
-  justify-content: space-between; /* center align horizontally */
-  align-items: center; /* center align vertically */
-  max-width: 1200px; /* Example, adjust based on ideal width for your layout */
-    margin: 0 auto; 
+  justify-content: space-between; /* Evenly space the play and mute buttons */
+  align-items: center;
+  max-width: 1200px; /* Adjust based on ideal width for your layout */
+  margin: 0 auto; 
 }
 
 .control-panel i {
-  font-size: 120px; /* adjust the size as you need */
-  justify-content: space-between;
+  font-size: 120px; /* Adjust the size as you need */
   cursor: pointer;
 }
 
 .control-panel i:hover {
-  color: gray; /* change color on hover for better UX */
+  color: gray; /* Change color on hover for better UX */
 }
 
 .fa-play {
   font-size: 80px; /* Increase as needed */
+}
+
+.fa-redo {
+  position: absolute;
+  right: 20px; /* Adjust as needed */
+  top: 0; /* Adjust as needed to position above the letter tiles */
 }
