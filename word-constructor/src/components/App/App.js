@@ -6,7 +6,7 @@ import ControlPanel from "../ControlPanel/ControlPanel";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BoardSpot from "../BoardSpot/BoardSpot";
-import appleImage from '../../assets/images/apple.png';
+import appleImage from '../../assets/images/fruit/apple.png';
 import appleAudio from '../../assets/audio/Apple.m4a'; 
  
 
