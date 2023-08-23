@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 import './BoardSpot.css';
 
-function BoardSpot({ letter, correct, onDropLetter }) {
-  // Existing state declaration
+function BoardSpot({ letter, correct, onDropLetter, reset }) {
   const [placedLetter, setPlacedLetter] = useState(null);
+
+  useEffect(() => {
+    if (reset) setPlacedLetter(null);
+  }, [reset]);
+  
+
 
   const [{ isOver }, drop] = useDrop({
     accept: "LETTER",

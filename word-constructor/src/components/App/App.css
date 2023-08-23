@@ -75,7 +75,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 40px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 5px;
@@ -85,4 +85,17 @@
 .next-button:hover {
   background-color: #45a049; /* Darker green on hover */
   color: white;
+}
+
+.correct-header-container {
+  height: 50px; /* or whatever height you prefer */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.correct-header {
+  color: #7dff66; /* Green color to match correct letters */
+  font-size: 2rem;
+  font-weight: bold;
 }

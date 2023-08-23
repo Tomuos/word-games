@@ -1,0 +1,603 @@
+==== ./src/assets/audio/apple.mp3 ====
+==== ./src/assets/images/images.txt ====
+==== ./src/components/App/App.css ====
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.word-slots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.hint {
+  color: red;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.word-image {
+  width: 200px;  /* Adjust as needed */
+  height: auto;
+  display: block;
+  margin: 20px auto;  /* centers the image and gives space above and below */
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}
+
+
+.next-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 40px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition-duration: 0.4s;
+}
+
+.next-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+  color: white;
+}
+
+.correct-header-container {
+  height: 50px; /* or whatever height you prefer */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.correct-header {
+  color: #7dff66; /* Green color to match correct letters */
+  font-size: 2rem;
+  font-weight: bold;
+}
+==== ./src/components/App/App.js ====
+import React, { useState, useRef, useEffect } from "react";
+import "./App.css";
+//import GameBoard from "../GameBoard/GameBoard";
+import LetterPool from "../LetterPool/LetterPool";
+import ControlPanel from "../ControlPanel/ControlPanel";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import BoardSpot from "../BoardSpot/BoardSpot";
+//import appleImage from "../../assets/images/fruit/apple.png";
+import appleAudio from "../../assets/audio/Apple.m4a";
+
+import "font-awesome/css/font-awesome.min.css";
+
+function App() {
+  const words = [
+    "apple",
+    "banana",
+    "blackberry",
+    "blueberry",
+    "cherry",
+    "lemon",
+    "mango",
+    "orange",
+    "pineapple",
+    "plum",
+    "raspberry",
+    "strawberry",
+  ];
+  const [currentWord, setCurrentWord] = useState("");
+  const [showHint, setShowHint] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef(new Audio(appleAudio));
+
+  const isWordComplete = () => {
+    return placedLetters.every((letter, index) => letter === currentWord[index]);
+  }
+  
+  const [placedLetters, setPlacedLetters] = useState(
+    Array(currentWord.length).fill(null)
+  );
+
+  useEffect(() => {
+    // get random word from words array
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const randomWord = words[randomIndex];
+    setCurrentWord(randomWord.toUpperCase());
+    // Call selectRandomWord once when the component mounts
+    selectRandomWord();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  const selectRandomWord = () => {
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const randomWord = words[randomIndex].toUpperCase();
+    setCurrentWord(randomWord);
+    setPlacedLetters(Array(randomWord.length).fill(null)); // Reset the placed letters to null
+  };
+
+  const isCorrect = (index) => {
+    return placedLetters[index] === currentWord[index];
+  };
+
+  const handleDropLetter = (letter, index) => {
+    const newPlacedLetters = [...placedLetters];
+    newPlacedLetters[index] = letter;
+    setPlacedLetters(newPlacedLetters);
+  };
+
+  const playAudio = () => {
+    audioRef.current.play();
+    audioRef.current.onended = () => {
+      setShowHint(true);
+    };
+  };
+
+  const toggleMute = () => {
+    setIsMuted((prevMuted) => {
+      const nextMuted = !prevMuted;
+      audioRef.current.muted = nextMuted;
+      return nextMuted;
+    });
+  };
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <div className="app">
+      <div className="correct-header-container">
+        {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
+      </div>
+      
+        {showHint && (
+          <div className="hint">Drag the letters to form the word!</div>
+        )}
+        <ControlPanel
+          playAudio={playAudio}
+          isMuted={isMuted}
+          toggleMute={toggleMute}
+          
+        />
+        <div className="word-slots">
+          {Array.from(currentWord).map((letter, index) => (
+            <BoardSpot
+              key={index}
+              letter={letter}
+              correct={isCorrect(index)}
+              onDropLetter={(droppedLetter) =>
+                handleDropLetter(droppedLetter, index)
+              }
+            />
+          ))}
+          <button className="next-button" onClick={selectRandomWord}>Next</button>
+
+
+        </div>
+
+        {currentWord && (
+          // images need to be in public folder to be accessible without importing
+          <img
+            src={`/images/fruit/${currentWord.toLowerCase()}.png`}
+            alt={currentWord.trim()}
+            className="word-image"
+          />
+        )}
+
+        {/* <GameBoard word={word} /> */}
+        <LetterPool />
+      </div>
+    </DndProvider>
+  );
+}
+
+export default App;
+==== ./src/components/BoardSpot/BoardSpot.css ====
+.word-slots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+.slot, .tile {
+    box-sizing: border-box; /* Include border and padding in the total width and height */
+    border: 3px solid #000;
+    width: 5rem;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    background: #EDEDED;
+    user-select: none; /* Prevent text selection for a more polished interaction */
+}
+
+.slot.correct {
+    /* Styling for correct letters */
+    border: solid 10px #6fce5f;
+    background: #DAD3BB;
+    overflow: hidden;
+}
+
+.slot.incorrect {
+    /* Styling for incorrect letters - dashed border */
+    border: dashed 4px rgb(0, 0, 0);
+}
+
+.tile {
+    background: #DAD3BB;
+}
+==== ./src/components/BoardSpot/BoardSpot.js ====
+import React, { useState } from 'react';
+import { useDrop } from 'react-dnd';
+import './BoardSpot.css';
+
+function BoardSpot({ letter, correct, onDropLetter }) {
+  // Existing state declaration
+  const [placedLetter, setPlacedLetter] = useState(null);
+
+  const [{ isOver }, drop] = useDrop({
+    accept: "LETTER",
+    drop: (item) => {
+      onDropLetter(item.letter);
+      setPlacedLetter(item.letter);
+      return { id: item.id };
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver()
+    }),
+  });
+
+  return (
+    <div ref={drop} className={`slot ${correct ? "correct" : "incorrect"}`} style={{ background: isOver ? 'lightblue' : '#EDEDED' }}>
+      {placedLetter ? <div>{placedLetter}</div> : null}
+    </div>
+  );
+}
+
+export default BoardSpot;
+==== ./src/components/ControlPanel/ControlPanel.css ====
+.control-panel {
+  display: flex;
+  justify-content: space-between; /* Evenly space the play and mute buttons */
+  align-items: center;
+  max-width: 1200px; /* Adjust based on ideal width for your layout */
+  margin: 0 auto; 
+}
+
+.control-panel i {
+  font-size: 120px; /* Adjust the size as you need */
+  cursor: pointer;
+}
+
+.control-panel i:hover {
+  color: gray; /* Change color on hover for better UX */
+}
+
+.fa-play {
+  font-size: 80px; /* Increase as needed */
+}
+
+.fa-redo {
+  position: absolute;
+  right: 20px; /* Adjust as needed */
+  top: 0; /* Adjust as needed to position above the letter tiles */
+}
+==== ./src/components/ControlPanel/ControlPanel.js ====
+import React from "react";
+import "./ControlPanel.css";
+
+function ControlPanel({ playAudio, isMuted, toggleMute, resetGame }) {
+  return (
+    <div className="control-panel">
+      <i className="fa fa-play fa-3x" onClick={playAudio}></i>
+      <i 
+        className={`fa ${isMuted ? "fa-volume-off" : "fa-volume-up"} fa-3x`}
+        onClick={toggleMute}
+      ></i>
+      <i className="fa fa-redo fa-3x" onClick={resetGame}></i>
+    </div>
+  );
+}
+
+export default ControlPanel;
+==== ./src/components/DraggableLetter/DraggableLetter.css ====
+.isLetter{
+    cursor: pointer;
+}
+
+.letter {
+    transition: transform 0.3s, background-color 0.3s;  /* Smoothens the hover effect */
+    cursor: pointer;  /* Changes the cursor to a hand pointer on hover */
+}
+
+.letter:hover {
+    transform: scale(1.05);  /* Slightly enlarges the letter on hover */
+    background-color: #E5E0C1;  /* Changes the background color slightly on hover */
+}
+==== ./src/components/DraggableLetter/DraggableLetter.js ====
+import { useDrag } from 'react-dnd';
+import './DraggableLetter.css'
+
+function DraggableLetter({ letter }) {
+  const [{ isDragging }, drag] = useDrag({
+    type: "LETTER",
+    item: { letter },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
+
+  return (
+    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} className="letter">
+      {letter}
+    </div>
+  );
+}
+
+
+
+export default DraggableLetter;
+==== ./src/components/GameBoard/GameBoard.css ====
+==== ./src/components/GameBoard/GameBoard.js ====
+import React from "react";
+import BoardSpot from "../BoardSpot/BoardSpot";
+
+function GameBoard({ word }) {
+  const handleDropLetter = (letter) => {
+    // Handle what happens when a letter is dropped.
+    // For instance, check if the word is being formed correctly.
+  };
+
+  return (
+    <div className="game-board">
+      {Array.from(word).map((_, index) => (
+        <BoardSpot key={index} onDropLetter={handleDropLetter} />
+      ))}
+    </div>
+  );
+}
+export default GameBoard;
+==== ./src/components/LetterPool/LetterPool.css ====
+.letter-pool {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);  /* 13 columns because 26 letters divided by 2 rows = 13 letters per row */
+    gap: 10px;  /* spacing between letters */
+    justify-items: center;
+    align-items: center;
+    padding: 20px;  /* padding around the grid for aesthetic purposes */
+}
+
+.letter {
+    border: 3px solid #000;
+    background: #DAD3BB;
+    width: 5rem;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;  /* adjust the font-size to fit well within the box */
+    font-weight: bold;
+}
+
+.letter-pool-container {
+    max-width: 1200px; /* Example, adjust based on ideal width for your layout */
+    margin: 0 auto;   /* Centers the container if it's less than the viewport width */
+}
+
+
+.letter-pool {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);  /* 26 letters in 2 rows = 13 letters per row */
+    gap: 10px;  /* spacing between letters */
+    transition: transform 0.3s; /* smoothens scaling effect */
+}
+
+@media screen and (max-width: 950px) {
+    .letter {
+        width: 4.5rem;
+        height: 8.5rem;
+        font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .letter {
+        width: 4rem;
+        height: 8rem;
+        font-size: 1.6rem;
+    }
+    .letter-pool {
+        gap: 8px;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .letter {
+        width: 3.5rem;
+        height: 7.5rem;
+        font-size: 1.4rem;
+    }
+    .letter-pool {
+        gap: 7px;
+        padding: 12px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .letter {
+        width: 3rem;
+        height: 7rem;
+        font-size: 1.2rem;
+    }
+    .letter-pool {
+        gap: 6px;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .letter {
+        width: 2.5rem;
+        height: 6.5rem;
+        font-size: 1rem;
+    }
+    .letter-pool {
+        gap: 5px;
+        padding: 8px;
+    }
+}
+
+
+.word-slots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+.slot {
+    border: 3px dashed #000;
+    width: 5rem;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    background: #EDEDED;  /* Lighter background to differentiate from the letters */
+}
+
+/* For smaller screens, reduce the size and spacing */
+@media screen and (max-width: 950px) {
+    .slot {
+        width: 4rem;
+        height: 8rem;
+        font-size: 1.8rem;
+    }
+    .word-slots {
+        gap: 8px;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .slot {
+        width: 3rem;
+        height: 7rem;
+        font-size: 1.4rem;
+    }
+    .word-slots {
+        gap: 6px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
+==== ./src/components/LetterPool/LetterPool.js ====
+import React from 'react';
+import './LetterPool.css';
+import DraggableLetter from '../DraggableLetter/DraggableLetter'; // Updated path
+
+
+// LETTER POOL COMPONENT should contain all the letters of the alphabet
+function LetterPool() {
+    return (
+        <div className="letter-pool-container">
+          <div className="letter-pool">
+            { "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter, index) => {
+                return <DraggableLetter key={index} letter={letter} />
+            })}
+          </div>
+        </div>
+      );
+}
+
+
+
+export default LetterPool;
+==== ./src/index.css ====
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+==== ./src/index.js ====
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./components/App/App.js";
+import 'font-awesome/css/font-awesome.min.css';
+
+// import reportWebVitals from "./reportWebVitals";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// reportWebVitals();

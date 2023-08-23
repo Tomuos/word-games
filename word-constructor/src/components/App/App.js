@@ -31,6 +31,10 @@ function App() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(new Audio(appleAudio));
 
+  const isWordComplete = () => {
+    return placedLetters.every((letter, index) => letter === currentWord[index]);
+  }
+  
   const [placedLetters, setPlacedLetters] = useState(
     Array(currentWord.length).fill(null)
   );
@@ -45,12 +49,17 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
+  const [resetSlots, setResetSlots] = useState(false); // Add this state
+
   const selectRandomWord = () => {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    const randomWord = words[randomIndex].toUpperCase();
-    setCurrentWord(randomWord);
-    setPlacedLetters(Array(randomWord.length).fill(null)); // Reset the placed letters
-  };
+  const randomIndex = Math.floor(Math.random() * words.length);
+  const randomWord = words[randomIndex].toUpperCase();
+  setCurrentWord(randomWord);
+  setPlacedLetters(Array(randomWord.length).fill(null));
+  setResetSlots(!resetSlots); // Toggle the resetSlots value
+};
+
+  
 
   const isCorrect = (index) => {
     return placedLetters[index] === currentWord[index];
@@ -80,6 +89,10 @@ function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app">
+      <div className="correct-header-container">
+        {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
+      </div>
+      
         {showHint && (
           <div className="hint">Drag the letters to form the word!</div>
         )}
@@ -92,15 +105,18 @@ function App() {
         <div className="word-slots">
           {Array.from(currentWord).map((letter, index) => (
             <BoardSpot
-              key={index}
-              letter={letter}
-              correct={isCorrect(index)}
-              onDropLetter={(droppedLetter) =>
-                handleDropLetter(droppedLetter, index)
-              }
+            key={index}
+            letter={letter}
+            correct={isCorrect(index)}
+            onDropLetter={(droppedLetter) =>
+            handleDropLetter(droppedLetter, index)
+            }
+            reset={resetSlots} // Use the resetSlots value
             />
+
           ))}
           <button className="next-button" onClick={selectRandomWord}>Next</button>
+
 
         </div>
 

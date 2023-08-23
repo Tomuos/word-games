@@ -1,4 +1,3 @@
-/* ./src/components/BoardSpot/BoardSpot.css */
 .word-slots {
     display: flex;
     justify-content: center;
@@ -7,8 +6,9 @@
     gap: 10px;
 }
 
-.slot {
-    border: 3px dashed #000;
+.slot, .tile {
+    box-sizing: border-box; /* Include border and padding in the total width and height */
+    border: 3px solid #000;
     width: 5rem;
     height: 9rem;
     display: flex;
@@ -16,18 +16,22 @@
     align-items: center;
     font-size: 2rem;
     font-weight: bold;
-    background: #EDEDED;  /* Lighter background to differentiate from the letters */
+    background: #EDEDED;
+    user-select: none; /* Prevent text selection for a more polished interaction */
+}
+
+.slot.correct {
+    /* Styling for correct letters */
+    border: solid 10px #6fce5f;
+    background: #DAD3BB;
+    overflow: hidden;
+}
+
+.slot.incorrect {
+    /* Styling for incorrect letters - dashed border */
+    border: dashed 4px rgb(0, 0, 0);
 }
 
 .tile {
-    border: 3px solid #000;
     background: #DAD3BB;
-    width: 5rem;
-    height: 9rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: bold;
-    user-select: none; /* Prevent text selection for a more polished interaction */
-  }
+}
