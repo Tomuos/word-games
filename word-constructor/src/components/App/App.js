@@ -40,7 +40,17 @@ function App() {
     const randomIndex = Math.floor(Math.random() * words.length);
     const randomWord = words[randomIndex];
     setCurrentWord(randomWord.toUpperCase());
+    // Call selectRandomWord once when the component mounts
+    selectRandomWord();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  const selectRandomWord = () => {
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const randomWord = words[randomIndex].toUpperCase();
+    setCurrentWord(randomWord);
+    setPlacedLetters(Array(randomWord.length).fill(null)); // Reset the placed letters
+  };
 
   const isCorrect = (index) => {
     return placedLetters[index] === currentWord[index];
@@ -77,8 +87,8 @@ function App() {
           playAudio={playAudio}
           isMuted={isMuted}
           toggleMute={toggleMute}
+          
         />
-
         <div className="word-slots">
           {Array.from(currentWord).map((letter, index) => (
             <BoardSpot
@@ -90,6 +100,8 @@ function App() {
               }
             />
           ))}
+          <button className="next-button" onClick={selectRandomWord}>Next</button>
+
         </div>
 
         {currentWord && (
