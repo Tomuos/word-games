@@ -74,31 +74,26 @@ function App() {
   };
   
 
-  const handleKeyPress = useCallback((event) => {
-    const key = event.key.toUpperCase();
-    // ... rest of the code
+  // Define handleDropLetter first
+const handleDropLetter = useCallback((letter, index) => {
+  const newPlacedLetters = [...placedLetters];
+  newPlacedLetters[index] = letter;
+  setPlacedLetters(newPlacedLetters);
+}, [placedLetters]);
 
-  
-    // Check for backspace key
-    if (event.key === 'Backspace') {
-      const newPlacedLetters = [...placedLetters];
-      const lastFilledIndex = newPlacedLetters.lastIndexOf(item => item !== null);
-      if (lastFilledIndex !== -1) {
-        newPlacedLetters[lastFilledIndex] = null;
-        setPlacedLetters(newPlacedLetters);
-      }
-      return;
+// Then define handleKeyPress
+const handleKeyPress = useCallback((event) => {
+  const key = event.key.toUpperCase();
+  // ... rest of the code
+  if (currentWord.includes(key) && key.length === 1 && key.match(/[A-Z]/)) {
+    const index = placedLetters.findIndex(item => item === null);
+    if (index !== -1) {
+      handleDropLetter(key, index); // No problem here now
     }
-  
-    if (currentWord.includes(key) && key.length === 1 && key.match(/[A-Z]/)) {
-      const index = placedLetters.findIndex(item => item === null);
-      if (index !== -1) {
-        handleDropLetter(key, index);
-      }
-    }
+  }
+  // ... rest of the code
+}, [placedLetters, currentWord, handleDropLetter]); // Dependencies are in correct order
 
-  
-    }, [placedLetters]);
 
     useEffect(() => {
       window.addEventListener('keydown', handleKeyPress);
@@ -113,13 +108,9 @@ function App() {
     return placedLetters[index] === currentWord[index];
   };
 
-  const handleDropLetter = (letter, index) => {
-    const newPlacedLetters = [...placedLetters];
-    newPlacedLetters[index] = letter;
-    setPlacedLetters(newPlacedLetters);
-    console.log("Handling letter drop:", letter, index, newPlacedLetters);
 
-  };
+  
+  
   
 
   const playAudio = () => {
@@ -155,21 +146,18 @@ function App() {
           
         />
         <div className="word-slots">
-        <p className="count-display" >{correctCount}/{words.length}</p> {/* Display the count here */}
-        {Array.from(currentWord).map((letter, index) => (
-        <BoardSpot
-          key={index}
-          letter={placedLetters[index]} // Ensure this part is rendering the placed letters correctly
-          correct={isCorrect(index)}
-          onDropLetter={(droppedLetter) => handleDropLetter(droppedLetter, index)}
-          reset={resetSlots}
-        />
-        ))}
-
-          <button className="next-button" onClick={selectRandomWord}>Next</button>
-
-
-        </div>
+  <p className="count-display">{correctCount}/{words.length}</p>
+  {placedLetters.map((letter, index) => (
+    <BoardSpot
+      key={index}
+      letter={letter} // Pass the letter from the placedLetters array
+      correct={isCorrect(index)}
+      onDropLetter={(droppedLetter) => handleDropLetter(droppedLetter, index)}
+      reset={resetSlots}
+    />
+  ))}
+  <button className="next-button" onClick={selectRandomWord}>Next</button>
+</div>
 
         {currentWord && (
           // images need to be in public folder to be accessible without importing
