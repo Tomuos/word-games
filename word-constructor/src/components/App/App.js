@@ -40,25 +40,27 @@ function App() {
   );
 
   useEffect(() => {
-    // get random word from words array
-    const randomIndex = Math.floor(Math.random() * words.length);
-    const randomWord = words[randomIndex];
-    setCurrentWord(randomWord.toUpperCase());
-    // Call selectRandomWord once when the component mounts
-    selectRandomWord();
+    selectRandomWord(); // Call selectRandomWord once when the component mounts
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
   
   const [resetSlots, setResetSlots] = useState(false); // Add this state
 
   const selectRandomWord = () => {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    const randomWord = words[randomIndex].toUpperCase();
+    console.log('Before selecting a new word:', currentWord, placedLetters);
+    const remainingWords = words.filter(word => word.toUpperCase() !== currentWord);
+    const randomIndex = Math.floor(Math.random() * remainingWords.length);
+    const randomWord = remainingWords[randomIndex].toUpperCase();
+    
     setCurrentWord(randomWord);
-    // Now that the currentWord has been set, update placedLetters with the new length
     setPlacedLetters(Array(randomWord.length).fill(null));
     setResetSlots(!resetSlots); // Toggle the resetSlots value
+  
+    console.log('After selecting a new word:', currentWord, placedLetters);
   };
+
+ 
 
   
 
