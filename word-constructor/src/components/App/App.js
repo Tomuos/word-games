@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+
 import "./App.css";
 //import GameBoard from "../GameBoard/GameBoard";
 import LetterPool from "../LetterPool/LetterPool";
@@ -30,6 +31,16 @@ function App() {
   const [showHint, setShowHint] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(new Audio(appleAudio));
+  const [correctCount, setCorrectCount] = useState(0);
+
+
+  const incrementCorrectCount = () => {
+    if (isWordComplete()) {
+      setCorrectCount(correctCount + 1);
+    }
+  };
+  
+  
 
   const isWordComplete = () => {
     return placedLetters.every((letter, index) => letter === currentWord[index]);
@@ -48,6 +59,8 @@ function App() {
   const [resetSlots, setResetSlots] = useState(false); // Add this state
 
   const selectRandomWord = () => {
+    incrementCorrectCount(); // Increment the count if the word is complete
+  
     console.log('Before selecting a new word:', currentWord, placedLetters);
     const remainingWords = words.filter(word => word.toUpperCase() !== currentWord);
     const randomIndex = Math.floor(Math.random() * remainingWords.length);
@@ -59,9 +72,41 @@ function App() {
   
     console.log('After selecting a new word:', currentWord, placedLetters);
   };
+  
 
- 
+  const handleKeyPress = useCallback((event) => {
+    const key = event.key.toUpperCase();
+    // ... rest of the code
 
+  
+    // Check for backspace key
+    if (event.key === 'Backspace') {
+      const newPlacedLetters = [...placedLetters];
+      const lastFilledIndex = newPlacedLetters.lastIndexOf(item => item !== null);
+      if (lastFilledIndex !== -1) {
+        newPlacedLetters[lastFilledIndex] = null;
+        setPlacedLetters(newPlacedLetters);
+      }
+      return;
+    }
+  
+    if (currentWord.includes(key) && key.length === 1 && key.match(/[A-Z]/)) {
+      const index = placedLetters.findIndex(item => item === null);
+      if (index !== -1) {
+        handleDropLetter(key, index);
+      }
+    }
+
+  
+    }, [placedLetters]);
+
+    useEffect(() => {
+      window.addEventListener('keydown', handleKeyPress);
+      return () => {
+        window.removeEventListener('keydown', handleKeyPress);
+      };
+    }, [handleKeyPress]);
+  
   
 
   const isCorrect = (index) => {
@@ -72,7 +117,10 @@ function App() {
     const newPlacedLetters = [...placedLetters];
     newPlacedLetters[index] = letter;
     setPlacedLetters(newPlacedLetters);
+    console.log("Handling letter drop:", letter, index, newPlacedLetters);
+
   };
+  
 
   const playAudio = () => {
     audioRef.current.play();
@@ -100,24 +148,24 @@ function App() {
           <div className="hint">Drag the letters to form the word!</div>
         )}
         <ControlPanel
+        
           playAudio={playAudio}
           isMuted={isMuted}
           toggleMute={toggleMute}
           
         />
         <div className="word-slots">
-          {Array.from(currentWord).map((letter, index) => (
-            <BoardSpot
-            key={index}
-            letter={letter}
-            correct={isCorrect(index)}
-            onDropLetter={(droppedLetter) =>
-            handleDropLetter(droppedLetter, index)
-            }
-            reset={resetSlots} // Use the resetSlots value
-            />
+        <p className="count-display" >{correctCount}/{words.length}</p> {/* Display the count here */}
+        {Array.from(currentWord).map((letter, index) => (
+        <BoardSpot
+          key={index}
+          letter={placedLetters[index]} // Ensure this part is rendering the placed letters correctly
+          correct={isCorrect(index)}
+          onDropLetter={(droppedLetter) => handleDropLetter(droppedLetter, index)}
+          reset={resetSlots}
+        />
+        ))}
 
-          ))}
           <button className="next-button" onClick={selectRandomWord}>Next</button>
 
 

@@ -99,3 +99,12 @@
   font-size: 2rem;
   font-weight: bold;
 }
+
+.count-display {
+  font-size: 30px; /* Set the font size as desired */
+  color: green;
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+}
