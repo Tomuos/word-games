@@ -52,12 +52,13 @@ function App() {
   const [resetSlots, setResetSlots] = useState(false); // Add this state
 
   const selectRandomWord = () => {
-  const randomIndex = Math.floor(Math.random() * words.length);
-  const randomWord = words[randomIndex].toUpperCase();
-  setCurrentWord(randomWord);
-  setPlacedLetters(Array(randomWord.length).fill(null));
-  setResetSlots(!resetSlots); // Toggle the resetSlots value
-};
+    const randomIndex = Math.floor(Math.random() * words.length);
+    const randomWord = words[randomIndex].toUpperCase();
+    setCurrentWord(randomWord);
+    // Now that the currentWord has been set, update placedLetters with the new length
+    setPlacedLetters(Array(randomWord.length).fill(null));
+    setResetSlots(!resetSlots); // Toggle the resetSlots value
+  };
 
   
 
