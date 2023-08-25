@@ -95,13 +95,15 @@
 }
 
 .correct-header {
-  color: #7dff66; /* Green color to match correct letters */
-  font-size: 2rem;
+  color: green; /* Green color to match correct letters */
+  font-size: 5rem;
   font-weight: bold;
+  padding: 0 10px;
 }
 
 .count-display {
   font-size: 30px; /* Set the font size as desired */
+  font-weight: 500;
   color: green;
   border: 1px solid black;
   padding: 10px;
