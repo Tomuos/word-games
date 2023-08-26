@@ -95,6 +95,9 @@
 }
 
 .correct-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: green; /* Green color to match correct letters */
   font-size: 5rem;
   font-weight: bold;

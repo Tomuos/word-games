@@ -18,10 +18,6 @@ function App() {
   const [placedLetters, setPlacedLetters] = useState(Array(currentWord.length).fill(null));
   const [resetSlots, setResetSlots] = useState(false);
 
-  useEffect(() => {
-    selectNextWord(); // Call the function when the component mounts
-  }, []);
-
   const incrementCorrectCount = () => {
     if (isWordComplete()) {
       setCorrectCount(correctCount + 1);
@@ -32,22 +28,29 @@ function App() {
     return placedLetters.every((letter, index) => letter === currentWord[index]);
   };
 
-  const selectNextWord = () => {
+  const selectNextWord = useCallback(() => {
     incrementCorrectCount();
-
+  
     if (currentWordIndex >= words.length - 1) {
       setCurrentWordIndex(0); // Loop back to the beginning
     } else {
       setCurrentWordIndex(currentWordIndex + 1); // Increment the index
     }
-
+  
     const nextWord = words[currentWordIndex].toUpperCase();
     setCurrentWord(nextWord);
     setPlacedLetters(Array(nextWord.length).fill(null));
     setResetSlots(!resetSlots);
-  };
+  }, [incrementCorrectCount, currentWordIndex, words, resetSlots]);
+  
+
+
+  useEffect(() => {
+    selectNextWord(); // Call the function when the component mounts
+  }, []); // Empty dependency array to run only once
 
   const handleDropLetter = useCallback((letter, index) => {
+    console.log("Handling drop: ", letter, index);  // <-- Add this line
     const newPlacedLetters = [...placedLetters];
     newPlacedLetters[index] = letter;
     setPlacedLetters(newPlacedLetters);
@@ -93,13 +96,14 @@ function App() {
     <DndProvider backend={HTML5Backend}>
       <div className="app">
         <div className="correct-header-container">
-          {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
         </div>
         {showHint && <div className="hint">Drag the letters to form the word!</div>}
         <ControlPanel playAudio={playAudio} isMuted={isMuted} toggleMute={toggleMute} />
         <div className="word-slots">
           <p className="count-display">{correctCount}/{words.length}</p>
-          {placedLetters.map((letter, index) => (
+          {placedLetters.map((letter, index) => {
+  console.log("Rendering letter: ", letter);  // <-- Add this line
+          return (
             <BoardSpot
               key={index}
               letter={letter}
@@ -107,11 +111,13 @@ function App() {
               onDropLetter={(droppedLetter) => handleDropLetter(droppedLetter, index)}
               reset={resetSlots}
             />
-          ))}
+          );
+        })}
           <button className="next-button" onClick={selectNextWord}>Next</button>
         </div>
         {currentWord && <img src={`/images/fruit/${currentWord.toLowerCase()}.png`} alt={currentWord.trim()} className="word-image" />}
         <LetterPool />
+          {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
       </div>
     </DndProvider>
   );
