@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import "./App.css";
 import LetterPool from "../LetterPool/LetterPool";
 import ControlPanel from "../ControlPanel/ControlPanel";
@@ -8,9 +8,15 @@ import BoardSpot from "../BoardSpot/BoardSpot";
 import appleAudio from "../../assets/audio/Apple.m4a";
 
 function App() {
-  const words = ["apple", "banana", "blackberry", "blueberry", "cherry", "lemon", "mango", "orange", "pineapple", "plum", "raspberry", "strawberry", "pear", "grapes", "kiwi"];
-  const [currentWord, setCurrentWord] = useState("");
-  const [currentWordIndex, setCurrentWordIndex] = useState(0); // New state variable
+  const words = useMemo(() => [
+    "apple", "banana", "blackberry", "blueberry", 
+    "cherry", "lemon", "mango", "orange", 
+    "pineapple", "plum", "raspberry", "strawberry", 
+    "pear", "grapes", "kiwi"
+  ], []);
+
+  const [currentWord, setCurrentWord] = useState(words[0].toUpperCase()); // Initialize to the first word
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showHint, setShowHint] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(new Audio(appleAudio));
@@ -18,39 +24,38 @@ function App() {
   const [placedLetters, setPlacedLetters] = useState(Array(currentWord.length).fill(null));
   const [resetSlots, setResetSlots] = useState(false);
 
-  const incrementCorrectCount = () => {
+  const isWordComplete = useCallback(() => {
+    return placedLetters.every((letter, index) => letter === currentWord[index]);
+  }, [placedLetters, currentWord]);
+
+  const incrementCorrectCount = useCallback(() => {
     if (isWordComplete()) {
       setCorrectCount(correctCount + 1);
     }
-  };
-
-  const isWordComplete = () => {
-    return placedLetters.every((letter, index) => letter === currentWord[index]);
-  };
+  }, [correctCount, isWordComplete]);
 
   const selectNextWord = useCallback(() => {
     incrementCorrectCount();
-  
+
+    let nextIndex;
     if (currentWordIndex >= words.length - 1) {
-      setCurrentWordIndex(0); // Loop back to the beginning
+      nextIndex = 0; // Loop back to the beginning
     } else {
-      setCurrentWordIndex(currentWordIndex + 1); // Increment the index
+      nextIndex = currentWordIndex + 1; // Increment the index
     }
-  
-    const nextWord = words[currentWordIndex].toUpperCase();
+    
+    setCurrentWordIndex(nextIndex);
+    const nextWord = words[nextIndex].toUpperCase();
     setCurrentWord(nextWord);
     setPlacedLetters(Array(nextWord.length).fill(null));
     setResetSlots(!resetSlots);
   }, [incrementCorrectCount, currentWordIndex, words, resetSlots]);
-  
-
 
   useEffect(() => {
-    selectNextWord(); // Call the function when the component mounts
-  }, []); // Empty dependency array to run only once
+    // Initialization code here
+  }, [selectNextWord]); // Updated to include selectNextWord
 
   const handleDropLetter = useCallback((letter, index) => {
-    console.log("Handling drop: ", letter, index);  // <-- Add this line
     const newPlacedLetters = [...placedLetters];
     newPlacedLetters[index] = letter;
     setPlacedLetters(newPlacedLetters);
@@ -101,9 +106,7 @@ function App() {
         <ControlPanel playAudio={playAudio} isMuted={isMuted} toggleMute={toggleMute} />
         <div className="word-slots">
           <p className="count-display">{correctCount}/{words.length}</p>
-          {placedLetters.map((letter, index) => {
-  console.log("Rendering letter: ", letter);  // <-- Add this line
-          return (
+          {placedLetters.map((letter, index) => (
             <BoardSpot
               key={index}
               letter={letter}
@@ -111,13 +114,12 @@ function App() {
               onDropLetter={(droppedLetter) => handleDropLetter(droppedLetter, index)}
               reset={resetSlots}
             />
-          );
-        })}
+          ))}
           <button className="next-button" onClick={selectNextWord}>Next</button>
         </div>
         {currentWord && <img src={`/images/fruit/${currentWord.toLowerCase()}.png`} alt={currentWord.trim()} className="word-image" />}
         <LetterPool />
-          {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
+        {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
       </div>
     </DndProvider>
   );
