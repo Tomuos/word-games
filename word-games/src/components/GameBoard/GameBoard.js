@@ -67,19 +67,24 @@ function GameBoard() {
     }
   }, [matchedPairs, points, wordPairs.length]);
 
+  const getColorClass = (word) => {
+    const pairIndex = wordPairs.findIndex(pair => pair.includes(word));
+    return `rainbow-color-${pairIndex + 1}`;
+  };
+
   return (
     <div>
       <ScoreDisplay score={points} />
       <div className="game-board">
-      {shuffledWords.map((word, index) => (
-    <WordTile 
-        key={index} 
-        word={word} 
-        className={matchedPairs.includes(word) ? 'matched-tile' : ''}
-        isRevealed={selectedTiles.some(t => t.index === index) || matchedPairs.includes(word)}
-        onClick={() => handleTileClick(index, word)}
-    />
-))}
+        {shuffledWords.map((word, index) => (
+          <WordTile 
+            key={index} 
+            word={word} 
+            className={`${matchedPairs.includes(word) ? 'matched-tile' : ''} ${selectedTiles.some(t => t.index === index) || matchedPairs.includes(word) ? getColorClass(word) : ''}`}
+            isRevealed={selectedTiles.some(t => t.index === index) || matchedPairs.includes(word)}
+            onClick={() => handleTileClick(index, word)}
+          />
+        ))}
       </div>
       <ResetButton onClick={restartGame} />
     </div>
