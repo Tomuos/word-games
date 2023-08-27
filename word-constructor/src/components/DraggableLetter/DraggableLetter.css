@@ -11,3 +11,30 @@
     transform: scale(1.05);  /* Slightly enlarges the letter on hover */
     background-color: #E5E0C1;  /* Changes the background color slightly on hover */
 }
+
+.letter-A { background-color: #ffb3ba; }
+.letter-B { background-color: #ffdfba; }
+.letter-C { background-color: #ffffba; }
+.letter-D { background-color: #baffc9; }
+.letter-E { background-color: #bae1ff; }
+.letter-F { background-color: #c9c9ff; }
+.letter-G { background-color: #ffbdfc; }
+.letter-H { background-color: #ffccff; }
+.letter-I { background-color: #ffe6f4; }
+.letter-J { background-color: #ffdbdb; }
+.letter-K { background-color: #ffebd2; }
+.letter-L { background-color: #f9ffe2; }
+.letter-M { background-color: #e0ffb3; }
+.letter-N { background-color: #c4ffcc; }
+.letter-O { background-color: #b3d8ff; }
+.letter-P { background-color: #bcc2ff; }
+.letter-Q { background-color: #ffccff; }
+.letter-R { background-color: #ffb8cc; }
+.letter-S { background-color: #ffb3b3; }
+.letter-T { background-color: #ffcc99; }
+.letter-U { background-color: #ffff99; }
+.letter-V { background-color: #ccffcc; }
+.letter-W { background-color: #99ccff; }
+.letter-X { background-color: #9999ff; }
+.letter-Y { background-color: #ff99ff; }
+.letter-Z { background-color: #ff6699; }
