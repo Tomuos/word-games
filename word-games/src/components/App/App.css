@@ -2,8 +2,8 @@
 
 .App {
   text-align: center;
-  background: linear-gradient(180deg, #FFD700, #4CAF50, #00BFFF, #FF6347);
-  background-size: 600% 100%;
+  background: linear-gradient(180deg, #ffffba, #baffc9, #bae1ff, #ffb3f4, #ffb3ba, #ffdfba);
+  background-size: 200% 100%;
   padding: 20px;
   height: 100vh;
   
