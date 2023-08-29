@@ -5,3 +5,11 @@
     font-size: 28px; /* Increase font size for better visibility */
     margin-bottom: 10px; /* Add some spacing below the score display */
 }
+
+.score-display {
+    /* ...existing styles... */
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  

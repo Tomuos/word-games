@@ -24,3 +24,12 @@
 .word-tile:hover {
     background-color: #ddd;
 }
+
+.word-tile {
+    /* ...existing styles... */
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  .matched-tile {
+    transform: scale(0.95);
+  }
+  

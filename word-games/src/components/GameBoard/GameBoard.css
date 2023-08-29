@@ -5,11 +5,18 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 100px auto;
     background-color: red; /* Add this line for the red background */
     padding: 20px; /* Add some padding for spacing */
     width: 720px; /* Set the width to 600px */
 }
+
+.game-board {
+    /* ...existing styles... */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
 .matched-tile {
     opacity: 0.3; 
     pointer-events: none; 

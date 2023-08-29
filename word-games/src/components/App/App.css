@@ -2,7 +2,15 @@
 
 .App {
   text-align: center;
+  background: linear-gradient(180deg, #FFD700, #4CAF50, #00BFFF, #FF6347);
+  background-size: 600% 100%;
+  padding: 20px;
+  height: 100vh;
+  
 }
+
+
+
 
 .App-logo {
   height: 40vmin;
