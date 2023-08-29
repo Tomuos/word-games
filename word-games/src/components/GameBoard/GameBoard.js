@@ -21,6 +21,10 @@ function GameBoard() {
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [points, setPoints] = useState(0);
   const [isEvaluating, setIsEvaluating] = useState(false);
+  const [gameComplete, setGameComplete] = useState(false);
+
+  
+  
 
   const isRhymingPair = (word1, word2) => {
     return wordPairs.some(pair => (pair.includes(word1) && pair.includes(word2))) && word1 !== word2;
@@ -63,9 +67,10 @@ function GameBoard() {
 
   useEffect(() => {
     if (matchedPairs.length === wordPairs.length * 2) {
-      alert(`Game complete! Your score is: ${points}`);
+      setGameComplete(true);
     }
   }, [matchedPairs, points, wordPairs.length]);
+  
 
   const getColorClass = (word) => {
     const pairIndex = wordPairs.findIndex(pair => pair.includes(word));
@@ -87,8 +92,9 @@ function GameBoard() {
         ))}
       </div>
       <ResetButton onClick={restartGame} />
+      {gameComplete && <h2>Congratulations, you won!</h2>}
     </div>
   );
-}
+        }
 
 export default GameBoard;

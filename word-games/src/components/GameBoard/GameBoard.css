@@ -1,5 +1,7 @@
 /* src/components/GameBoard/GameBoard.css */
 
+
+
 .game-board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

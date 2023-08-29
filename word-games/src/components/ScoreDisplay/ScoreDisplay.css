@@ -1,14 +1,16 @@
 /* src/components/ScoreDisplay/ScoreDisplay.css */
 
 .score-display {
-    color: blue; /* Set the text color to blue */
+    color: rgb(0, 0, 0); /* Set the text color to black */
     font-size: 28px; /* Increase font size for better visibility */
-    margin-bottom: 10px; /* Add some spacing below the score display */
+    margin-bottom: auto; /* Add some spacing below the score display */
+    font-weight:bold ; /* Make the text bold */
+
 }
 
 .score-display {
     /* ...existing styles... */
-    background-color: #eee;
+    
     padding: 10px;
     border-radius: 10px;
   }
