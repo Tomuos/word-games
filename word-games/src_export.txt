@@ -1,0 +1,454 @@
+==== ./src/components/App/App.css ====
+/* ./src/components/App/App.css */
+
+.App {
+  text-align: center;
+  background: linear-gradient(180deg, #ffffba, #baffc9, #bae1ff, #ffb3f4, #ffb3ba, #ffdfba);
+  background-size: 200% 100%;
+  padding: 20px;
+  height: 100vh;
+  
+}
+
+
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}==== ./src/components/App/App.js ====
+// src/components/App/App.js
+
+import React from 'react';
+import './App.css';
+import GameBoard from '../GameBoard/GameBoard';
+import FlippingCard from './FlippingCard';
+
+function App() {
+  return (
+    <div className="App">
+      <h1>Phonetic Memory Game</h1>
+      <GameBoard />
+      <div>
+      <FlippingCard />
+    </div>
+    </div>
+  );
+}
+
+export default App;
+==== ./src/components/Card/Card.css ====
+.card {
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  .card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  ==== ./src/components/Card/Card.js ====
+// src/components/Card/Card.js
+
+import React, { useState } from 'react';
+import './Card.css';
+
+function Card({ sound }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleCardClick = () => {
+    setIsFlipped(true);
+    
+    const audio = new Audio(`/sounds/${sound}.mp3`);
+    audio.play();
+
+    // Add further logic for card matching if needed
+  };
+
+  return (
+    <div className="card" onClick={handleCardClick}>
+      {isFlipped ? sound : "?"}
+    </div>
+  );
+}
+
+export default Card;
+==== ./src/components/FlippingCard/FlippingCard.css ====
+.card-container {
+    width: 150px;
+    height: 200px;
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .card-front, 
+  .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .card-front {
+    background-color: #eaeaea;
+  }
+  
+  .card-back {
+    background-color: #ddd;
+    transform: rotateY(180deg);
+  }
+  
+  .card-container.flipped .card-front {
+    transform: rotateY(180deg);
+  }
+  
+  .card-container.flipped .card-back {
+    transform: rotateY(360deg);
+  }
+  
+  .card-front, .card-back, .card-container.flipped .card-front, .card-container.flipped .card-back {
+    transition: transform 0.5s;
+  }
+  ==== ./src/components/FlippingCard/FlippingCard.js ====
+import React, { useState } from 'react';
+import './FlippingCard.css';
+
+const FlippingCard = () => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  return (
+    <div className={`card-container ${isFlipped ? 'flipped' : ''}`} onClick={handleFlip}>
+      <div className="card-front">
+        Front
+      </div>
+      <div className="card-back">
+        Back
+      </div>
+    </div>
+  );
+};
+
+export default FlippingCard;
+==== ./src/components/GameBoard/GameBoard.css ====
+/* src/components/GameBoard/GameBoard.css */
+
+
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 800px;
+    margin: 100px auto;
+    background-color: red; /* Add this line for the red background */
+    padding: 20px; /* Add some padding for spacing */
+    width: 720px; /* Set the width to 600px */
+}
+
+.game-board {
+    /* ...existing styles... */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+.matched-tile {
+    opacity: 0.3; 
+    pointer-events: none; 
+}
+
+.rainbow-color-1 { background-color: #ffdfba; }
+.rainbow-color-2 { background-color: #ffffba;}
+.rainbow-color-3 { background-color: #baffc9; }
+.rainbow-color-4 { background-color: #bae1ff;}
+.rainbow-color-5 { background-color: #c9c9ff; }
+.rainbow-color-6 { background-color: #ffbdfc; }
+.rainbow-color-7 { background-color: #ffe6f4; }
+
+
+==== ./src/components/GameBoard/GameBoard.js ====
+import React, { useState, useEffect } from 'react';
+import WordTile from '../WordTile/WordTile';
+import ScoreDisplay from '../ScoreDisplay/ScoreDisplay';
+import ResetButton from '../ResetButton/ResetButton';
+import './GameBoard.css';
+
+function GameBoard() {
+  const wordPairs = [
+    ['log', 'dog'],
+    ['cap', 'map'],
+    ['hat', 'bat'],
+    ['pot', 'dot'],
+    ['rug', 'bug'],
+    ['fox', 'box'],
+    // add more pairs till you have 12 if desired
+  ];
+  const flattenedWords = wordPairs.flat();
+
+  const [shuffledWords, setShuffledWords] = useState(flattenedWords.sort(() => 0.5 - Math.random()));
+  const [selectedTiles, setSelectedTiles] = useState([]);
+  const [matchedPairs, setMatchedPairs] = useState([]);
+  const [points, setPoints] = useState(0);
+  const [isEvaluating, setIsEvaluating] = useState(false);
+  const [gameComplete, setGameComplete] = useState(false);
+
+  
+  
+
+  const isRhymingPair = (word1, word2) => {
+    return wordPairs.some(pair => (pair.includes(word1) && pair.includes(word2))) && word1 !== word2;
+  }
+
+  const handleTileClick = (index, word) => {
+    if (isEvaluating || selectedTiles.length === 2 || matchedPairs.includes(word)) return;
+
+    const tileAlreadySelected = selectedTiles.find(t => t.index === index);
+
+    if (!tileAlreadySelected) {
+      const newSelectedTiles = [...selectedTiles, { index, word }];
+      setSelectedTiles(newSelectedTiles);
+
+      if (newSelectedTiles.length === 2) {
+        const [firstTile, secondTile] = newSelectedTiles;
+        if (isRhymingPair(firstTile.word, secondTile.word)) {
+          setMatchedPairs(prevPairs => [...prevPairs, firstTile.word, secondTile.word]);
+          setPoints(points + 10);
+          setSelectedTiles([]); // Clear selected tiles
+        } else {
+          setIsEvaluating(true);
+          setTimeout(() => {
+            setSelectedTiles([]); // Clear selected tiles
+            setIsEvaluating(false); // Reset evaluation state
+          }, 2000);
+          setPoints(points - 1);
+        }
+      }
+    }
+  };
+
+  const restartGame = () => {
+    setShuffledWords(flattenedWords.sort(() => 0.5 - Math.random()));
+    setSelectedTiles([]);
+    setMatchedPairs([]);
+    setPoints(0);
+    setIsEvaluating(false);
+  };
+
+  useEffect(() => {
+    if (matchedPairs.length === wordPairs.length * 2) {
+      setGameComplete(true);
+    }
+  }, [matchedPairs, points, wordPairs.length]);
+  
+
+  const getColorClass = (word) => {
+    const pairIndex = wordPairs.findIndex(pair => pair.includes(word));
+    return `rainbow-color-${pairIndex + 1}`;
+  };
+
+  return (
+    <div>
+      <ScoreDisplay score={points} />
+      <div className="game-board">
+        {shuffledWords.map((word, index) => (
+          <WordTile 
+            key={index} 
+            word={word} 
+            className={`${matchedPairs.includes(word) ? 'matched-tile' : ''} ${selectedTiles.some(t => t.index === index) || matchedPairs.includes(word) ? getColorClass(word) : ''}`}
+            isRevealed={selectedTiles.some(t => t.index === index) || matchedPairs.includes(word)}
+            onClick={() => handleTileClick(index, word)}
+          />
+        ))}
+      </div>
+      <ResetButton onClick={restartGame} />
+      {gameComplete && <h2>Congratulations, you won!</h2>}
+    </div>
+  );
+        }
+
+export default GameBoard;
+==== ./src/components/ResetButton/ResetButton.css ====
+/* src/components/ResetButton/ResetButton.css */
+
+.reset-button {
+    background-color: blue; /* Set the background color to blue */
+    color: white; /* Set the text color to white */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.reset-button:hover {
+    background-color: #0073e6; /* Darker blue on hover */
+}
+
+.reset-button:active {
+    background-color: #005bb5;
+  }
+  ==== ./src/components/ResetButton/ResetButton.js ====
+// src/components/ResetButton/ResetButton.js
+
+import React from 'react';
+import './ResetButton.css';
+
+function ResetButton({ onClick }) {
+  return (
+    <button className="reset-button" onClick={onClick}>
+      Restart Game
+    </button>
+  );
+}
+
+export default ResetButton;
+==== ./src/components/ScoreDisplay/ScoreDisplay.css ====
+/* src/components/ScoreDisplay/ScoreDisplay.css */
+
+.score-display {
+    color: rgb(0, 0, 0); /* Set the text color to black */
+    font-size: 28px; /* Increase font size for better visibility */
+    margin-bottom: auto; /* Add some spacing below the score display */
+    font-weight:bold ; /* Make the text bold */
+
+}
+
+.score-display {
+    /* ...existing styles... */
+    
+    padding: 10px;
+    border-radius: 10px;
+  }
+  ==== ./src/components/ScoreDisplay/ScoreDisplay.js ====
+// src/components/ScoreDisplay/ScoreDisplay.js
+
+import React from 'react';
+import './ScoreDisplay.css';
+
+function ScoreDisplay({ score }) {
+  return (
+    <div className="score-display">
+      Score: {score}
+    </div>
+  );
+}
+
+export default ScoreDisplay;
+==== ./src/components/WordTile/WordTile.css ====
+/* src/components/WordTile/WordTile.css */
+
+.word-tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #eaeaea;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  width: 120px;
+  height: 120px;
+  font-size: 44px;
+  font-weight: bold;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); 
+}
+
+.word-tile.selected {
+    background-color: yellow; /* Set background color to yellow for selected pairs */
+}
+
+/* .word-tile:hover {
+    background-color: #ddd;
+} */
+
+.word-tile {
+    /* ...existing styles... */
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  .matched-tile {
+    transform: scale(0.95);
+  }
+  ==== ./src/components/WordTile/WordTile.js ====
+// src/components/WordTile/WordTile.js
+
+import React from 'react';
+import './WordTile.css';
+
+function WordTile({ word, isRevealed, onClick, className }) {
+  return (
+      <div className={`word-tile ${className}`} onClick={onClick}>
+          {isRevealed ? word : '?'}
+      </div>
+  );
+}
+
+export default WordTile;
+==== ./src/index.css ====
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+==== ./src/index.js ====
+// src/index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './components/App/App';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

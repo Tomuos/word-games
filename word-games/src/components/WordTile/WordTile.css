@@ -1,29 +1,30 @@
 /* src/components/WordTile/WordTile.css */
 
 .word-tile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px;
-    margin: 5px;
-    background-color: #eaeaea;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 120px; 
-    height: 120px;
-    font-size: 44px;
-    font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #eaeaea;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  width: 120px;
+  height: 120px;
+  font-size: 44px;
+  font-weight: bold;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); 
 }
 
 .word-tile.selected {
     background-color: yellow; /* Set background color to yellow for selected pairs */
 }
 
-.word-tile:hover {
+/* .word-tile:hover {
     background-color: #ddd;
-}
+} */
 
 .word-tile {
     /* ...existing styles... */
