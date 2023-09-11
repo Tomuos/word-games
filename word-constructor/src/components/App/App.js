@@ -23,6 +23,8 @@ function App() {
   const [correctCount, setCorrectCount] = useState(0);
   const [placedLetters, setPlacedLetters] = useState(Array(currentWord.length).fill(null));
   const [resetSlots, setResetSlots] = useState(false);
+  const [focusedInput, setFocusedInput] = useState(null);
+
 
   const isWordComplete = useCallback(() => {
     return placedLetters.every((letter, index) => letter === currentWord[index]);
@@ -63,14 +65,31 @@ function App() {
 
   const handleKeyPress = useCallback((event) => {
     const key = event.key.toUpperCase();
-    if (currentWord.includes(key) && key.length === 1 && key.match(/[A-Z]/)) {
+    if (key === "BACKSPACE") {
+      // Handle backspace key
+      if (focusedInput !== null) {
+        // Clear the corresponding input
+        const newPlacedLetters = [...placedLetters];
+        newPlacedLetters[focusedInput] = null;
+        setPlacedLetters(newPlacedLetters);
+        // Move focus to the previous input, if available
+        if (focusedInput > 0) {
+          setFocusedInput(focusedInput - 1);
+        }
+      }
+    } else if (currentWord.includes(key) && key.length === 1 && key.match(/[A-Z]/)) {
+      // Handle regular letter input
       const index = placedLetters.findIndex(item => item === null);
       if (index !== -1) {
         handleDropLetter(key, index);
+        // Set the focus to the next input, if available
+        if (index < placedLetters.length - 1) {
+          setFocusedInput(index + 1);
+        }
       }
     }
-  }, [placedLetters, currentWord, handleDropLetter]);
-
+  }, [placedLetters, currentWord, handleDropLetter, focusedInput]);
+  
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => {
