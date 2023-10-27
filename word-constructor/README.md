@@ -1,8 +1,14 @@
-# word-games
+# Word Constructor
 
 ## Description
 
-This is a collection of word games that I have written in javascript.  The games currently being worked on is:
+"Word Constructor" is an interactive word puzzle game, crafted meticulously in JavaScript to offer users a unique way to reinforce their spelling abilities.
 
-The word constructor - a game where you have to match the phonetic sound of a word to the correct spelling. By dragging the letters to the correct position on a grid of empty boxes.
+### Gameplay
+
+**Word Constructor** - Dive deep into a game where players need to align the phonetic sound of a word with its correct spelling. The challenge? Dragging the letters into their rightful position on a grid of awaiting boxes. As the levels progress, the difficulty ramps up, ensuring users are constantly on their toes.
+
+### Why Word Constructor?
+
+Drawing inspiration from the age-old challenge of phonetic spellings, "Word Constructor" aims to bridge the gap between how a word sounds and how it's written, providing a holistic learning experience.
 
