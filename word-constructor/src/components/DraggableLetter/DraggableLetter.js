@@ -3,7 +3,7 @@ import './DraggableLetter.css';
 
 function DraggableLetter({ letter }) {
   const [{ isDragging }, drag] = useDrag({
-    type: "LETTER",
+    type: "letter",
     item: { letter },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
@@ -11,7 +11,7 @@ function DraggableLetter({ letter }) {
   });
 
   // Add dynamic class based on the letter
-  const tileClass = `letter-${letter.toUpperCase()}`;
+  const tileClass = `letter-${letter.toLowerCase()}`;
 
   return (
     <div ref={drag} 

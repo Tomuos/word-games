@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import React, { useState,  useEffect, useCallback, useMemo } from "react";
 import "./App.css";
 import LetterPool from "../LetterPool/LetterPool";
-import ControlPanel from "../ControlPanel/ControlPanel";
+// import ControlPanel from "../ControlPanel/ControlPanel";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BoardSpot from "../BoardSpot/BoardSpot";
-import appleAudio from "../../assets/audio/Apple.m4a";
+// import appleAudio from "../../assets/audio/Apple.m4a";
 
 function App() {
   const words = useMemo(() => [
@@ -15,11 +15,11 @@ function App() {
     "pear", "grapes", "kiwi"
   ], []);
 
-  const [currentWord, setCurrentWord] = useState(words[0].toUpperCase()); // Initialize to the first word
+  const [currentWord, setCurrentWord] = useState(words[0]); // Initialize to the first word
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [showHint, setShowHint] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const audioRef = useRef(new Audio(appleAudio));
+  // const [showHint, setShowHint] = useState(false);
+  // const [isMuted, setIsMuted] = useState(false);
+  // const audioRef = useRef(new Audio(appleAudio));
   const [correctCount, setCorrectCount] = useState(0);
   const [placedLetters, setPlacedLetters] = useState(Array(currentWord.length).fill(null));
   const [resetSlots, setResetSlots] = useState(false);
@@ -38,7 +38,7 @@ function App() {
 
   const selectNextWord = useCallback(() => {
     incrementCorrectCount();
-
+  
     let nextIndex;
     if (currentWordIndex >= words.length - 1) {
       nextIndex = 0; // Loop back to the beginning
@@ -47,11 +47,12 @@ function App() {
     }
     
     setCurrentWordIndex(nextIndex);
-    const nextWord = words[nextIndex].toUpperCase();
+    const nextWord = words[nextIndex]; // Keep the next word in lowercase
     setCurrentWord(nextWord);
     setPlacedLetters(Array(nextWord.length).fill(null));
     setResetSlots(!resetSlots);
   }, [incrementCorrectCount, currentWordIndex, words, resetSlots]);
+  
 
   useEffect(() => {
     // Initialization code here
@@ -64,11 +65,10 @@ function App() {
   }, [placedLetters]);
 
   const handleKeyPress = useCallback((event) => {
-    const key = event.key.toUpperCase();
-    if (key === "BACKSPACE") {
+    const key = event.key.toLowerCase();
+    if (key === "backspace") {
       // Handle backspace key
       if (focusedInput !== null) {
-        // Clear the corresponding input
         const newPlacedLetters = [...placedLetters];
         newPlacedLetters[focusedInput] = null;
         setPlacedLetters(newPlacedLetters);
@@ -77,7 +77,7 @@ function App() {
           setFocusedInput(focusedInput - 1);
         }
       }
-    } else if (currentWord.includes(key) && key.length === 1 && key.match(/[A-Z]/)) {
+    } else if (currentWord.includes(key) && key.length === 1 && key.match(/[a-z]/)) {
       // Handle regular letter input
       const index = placedLetters.findIndex(item => item === null);
       if (index !== -1) {
@@ -90,6 +90,7 @@ function App() {
     }
   }, [placedLetters, currentWord, handleDropLetter, focusedInput]);
   
+  
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => {
@@ -98,31 +99,32 @@ function App() {
   }, [handleKeyPress]);
 
   const isCorrect = (index) => {
-    return placedLetters[index] === currentWord[index];
+    return placedLetters[index]?.toLowerCase() === currentWord[index];
   };
+  
 
-  const playAudio = () => {
-    audioRef.current.play();
-    audioRef.current.onended = () => {
-      setShowHint(true);
-    };
-  };
+  // const playAudio = () => {
+  //   audioRef.current.play();
+  //   audioRef.current.onended = () => {
+  //     setShowHint(true);
+  //   };
+  // };
 
-  const toggleMute = () => {
-    setIsMuted((prevMuted) => {
-      const nextMuted = !prevMuted;
-      audioRef.current.muted = nextMuted;
-      return nextMuted;
-    });
-  };
+  // const toggleMute = () => {
+  //   setIsMuted((prevMuted) => {
+  //     const nextMuted = !prevMuted;
+  //     audioRef.current.muted = nextMuted;
+  //     return nextMuted;
+  //   });
+  // };
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app">
         <div className="correct-header-container">
         </div>
-        {showHint && <div className="hint">Drag the letters to form the word!</div>}
-        <ControlPanel playAudio={playAudio} isMuted={isMuted} toggleMute={toggleMute} />
+        {/* {showHint && <div className="hint">Drag the letters to form the word!</div>} */}
+        {/* <ControlPanel playAudio={playAudio} isMuted={isMuted} toggleMute={toggleMute} /> */}
         <div className="word-slots">
           <p className="count-display">{correctCount}/{words.length}</p>
           {placedLetters.map((letter, index) => (

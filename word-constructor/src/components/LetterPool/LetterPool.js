@@ -8,7 +8,7 @@ function LetterPool() {
     return (
         <div className="letter-pool-container">
           <div className="letter-pool">
-            { "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter, index) => {
+            { "abcdefghijklmnopqrstuvwxyz".split("").map((letter, index) => {
                 return <DraggableLetter key={index} letter={letter} />
             })}
           </div>

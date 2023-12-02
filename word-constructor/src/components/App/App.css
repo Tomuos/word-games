@@ -113,3 +113,88 @@
   margin: 5px;
   text-align: center;
 }
+
+@media screen and (max-width: 1200px) {
+  .word-slots {
+    justify-content: space-around; /* Adjust layout */
+  }
+
+  .letter, .slot {
+    width: 4.5rem; /* Adjust tile sizes */
+    height: 9rem;
+  }
+
+  .App-header {
+    padding: 20px; /* Adjust padding */
+  }
+
+  /* Other CSS adjustments for elements under 1200px width */
+}
+
+
+@media screen and (max-width: 768px) { /* For tablets */
+  .word-slots {
+    flex-direction: column; /* Stack letters vertically */
+  }
+
+  .letter, .slot {
+    width: 4rem; /* Smaller size for tiles */
+    height: 8rem;
+  }
+
+  /* Other adjustments for tablet screens */
+}
+
+@media screen and (max-width: 480px) {
+  .word-slots {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px; /* Further reduced gap for smaller screens */
+  }
+
+  .slot.incorrect {
+    border: 2px dashed #000; /* Slightly thinner border for smaller screens */
+    width: 10vw; /* Adjusted width for slots */
+    height: 15vw; /* Adjusted height for slots to maintain aspect ratio */
+    font-size: 3vw; /* Adjust font size if you have text in slots */
+    margin: 2px; /* Optional: if you want to add some space around the slots */
+  }
+
+  .slot.correct {
+    border: 2px dashed #000; /* Slightly thinner border for smaller screens */
+    width: 10vw; /* Adjusted width for slots */
+    height: 15vw; /* Adjusted height for slots to maintain aspect ratio */
+    font-size: 3vw; /* Adjust font size if you have text in slots */
+    margin: 2px; /* Optional: if you want to add some space around the slots */
+  }
+  
+  .letter {
+    width: 1.5rem; /* Adjusted width for letters */
+    height: 2rem; /* Adjusted height for letters */
+    font-size: 3vw; /* Adjust font size for better readability */
+    line-height: 15vw; /* Adjust line height to vertically center the text in the box */
+    text-align: center; /* Ensure the text is centered */
+  }
+
+  .next-button {
+    padding: 5px 10px;
+    font-size: 4vw; /* Smaller font size for the 'Next' button */
+    margin: 10px 0; /* Add some margin above and below the button */
+  }
+
+  .word-image {
+    width: 40vw; /* Scale image to fit within viewport */
+    height: auto; /* Maintain aspect ratio */
+    margin: 20px auto; /* Add margin for spacing */
+  }
+
+  .count-display {
+    font-size: 5vw; /* Smaller font size for the count display */
+    margin: 5px; /* Adjust margin */
+    padding: 5px; /* Adjust padding */
+    border: 1px solid #000; /* Adjust border width */
+  }
+
+  /* You may need to adjust other elements as well */
+}

@@ -11,7 +11,7 @@ function BoardSpot({ letter, correct, onDropLetter, reset }) {
   }, [reset]);
 
   const [{ isOver }, drop] = useDrop({
-    accept: "LETTER",
+    accept: "letter",
     drop: (item) => {
       onDropLetter(item.letter);
       return { id: item.id };
@@ -20,6 +20,8 @@ function BoardSpot({ letter, correct, onDropLetter, reset }) {
       isOver: monitor.isOver()
     }),
   });
+
+  
 
   return (
     <div ref={drop} className={`slot ${correct ? "correct" : "incorrect"}`} style={{ background: isOver ? 'lightblue' : '#EDEDED' }}>

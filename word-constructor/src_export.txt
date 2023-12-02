@@ -1,4 +1,3 @@
-==== ./src/.dockerignore ====
 ==== ./src/components/App/App.css ====
 .App {
   text-align: center;
@@ -133,7 +132,7 @@ function App() {
     "pear", "grapes", "kiwi"
   ], []);
 
-  const [currentWord, setCurrentWord] = useState(words[0].toUpperCase()); // Initialize to the first word
+  const [currentWord, setCurrentWord] = useState(words[0]); // Initialize to the first word
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showHint, setShowHint] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -141,6 +140,8 @@ function App() {
   const [correctCount, setCorrectCount] = useState(0);
   const [placedLetters, setPlacedLetters] = useState(Array(currentWord.length).fill(null));
   const [resetSlots, setResetSlots] = useState(false);
+  const [focusedInput, setFocusedInput] = useState(null);
+
 
   const isWordComplete = useCallback(() => {
     return placedLetters.every((letter, index) => letter === currentWord[index]);
@@ -154,7 +155,7 @@ function App() {
 
   const selectNextWord = useCallback(() => {
     incrementCorrectCount();
-
+  
     let nextIndex;
     if (currentWordIndex >= words.length - 1) {
       nextIndex = 0; // Loop back to the beginning
@@ -163,11 +164,12 @@ function App() {
     }
     
     setCurrentWordIndex(nextIndex);
-    const nextWord = words[nextIndex].toUpperCase();
+    const nextWord = words[nextIndex]; // Keep the next word in lowercase
     setCurrentWord(nextWord);
     setPlacedLetters(Array(nextWord.length).fill(null));
     setResetSlots(!resetSlots);
   }, [incrementCorrectCount, currentWordIndex, words, resetSlots]);
+  
 
   useEffect(() => {
     // Initialization code here
@@ -180,15 +182,32 @@ function App() {
   }, [placedLetters]);
 
   const handleKeyPress = useCallback((event) => {
-    const key = event.key.toUpperCase();
-    if (currentWord.includes(key) && key.length === 1 && key.match(/[A-Z]/)) {
+    const key = event.key.toLowerCase();
+    if (key === "backspace") {
+      // Handle backspace key
+      if (focusedInput !== null) {
+        const newPlacedLetters = [...placedLetters];
+        newPlacedLetters[focusedInput] = null;
+        setPlacedLetters(newPlacedLetters);
+        // Move focus to the previous input, if available
+        if (focusedInput > 0) {
+          setFocusedInput(focusedInput - 1);
+        }
+      }
+    } else if (currentWord.includes(key) && key.length === 1 && key.match(/[a-z]/)) {
+      // Handle regular letter input
       const index = placedLetters.findIndex(item => item === null);
       if (index !== -1) {
         handleDropLetter(key, index);
+        // Set the focus to the next input, if available
+        if (index < placedLetters.length - 1) {
+          setFocusedInput(index + 1);
+        }
       }
     }
-  }, [placedLetters, currentWord, handleDropLetter]);
-
+  }, [placedLetters, currentWord, handleDropLetter, focusedInput]);
+  
+  
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
     return () => {
@@ -197,8 +216,9 @@ function App() {
   }, [handleKeyPress]);
 
   const isCorrect = (index) => {
-    return placedLetters[index] === currentWord[index];
+    return placedLetters[index]?.toLowerCase() === currentWord[index];
   };
+  
 
   const playAudio = () => {
     audioRef.current.play();
@@ -296,7 +316,7 @@ function BoardSpot({ letter, correct, onDropLetter, reset }) {
   }, [reset]);
 
   const [{ isOver }, drop] = useDrop({
-    accept: "LETTER",
+    accept: "letter",
     drop: (item) => {
       onDropLetter(item.letter);
       return { id: item.id };
@@ -305,6 +325,8 @@ function BoardSpot({ letter, correct, onDropLetter, reset }) {
       isOver: monitor.isOver()
     }),
   });
+
+  
 
   return (
     <div ref={drop} className={`slot ${correct ? "correct" : "incorrect"}`} style={{ background: isOver ? 'lightblue' : '#EDEDED' }}>
@@ -375,32 +397,32 @@ export default ControlPanel;
     background-color: #E5E0C1;  /* Changes the background color slightly on hover */
 }
 
-.letter-A { background-color: #ffb3ba; }
-.letter-B { background-color: #ffdfba; }
-.letter-C { background-color: #ffffba; }
-.letter-D { background-color: #baffc9; }
-.letter-E { background-color: #bae1ff; }
-.letter-F { background-color: #c9c9ff; }
-.letter-G { background-color: #ffbdfc; }
-.letter-H { background-color: #ffccff; }
-.letter-I { background-color: #ffe6f4; }
-.letter-J { background-color: #ffdbdb; }
-.letter-K { background-color: #ffebd2; }
-.letter-L { background-color: #f9ffe2; }
-.letter-M { background-color: #e0ffb3; }
-.letter-N { background-color: #c4ffcc; }
-.letter-O { background-color: #b3d8ff; }
-.letter-P { background-color: #bcc2ff; }
-.letter-Q { background-color: #ffccff; }
-.letter-R { background-color: #ffb8cc; }
-.letter-S { background-color: #ffb3b3; }
-.letter-T { background-color: #ffcc99; }
-.letter-U { background-color: #ffff99; }
-.letter-V { background-color: #ccffcc; }
-.letter-W { background-color: #99ccff; }
-.letter-X { background-color: #9999ff; }
-.letter-Y { background-color: #ff99ff; }
-.letter-Z { background-color: #ff6699; }==== ./src/components/DraggableLetter/DraggableLetter.js ====
+.letter-a { background-color: #ffb3ba; }
+.letter-b { background-color: #ffdfba; }
+.letter-c { background-color: #ffffba; }
+.letter-d { background-color: #baffc9; }
+.letter-e { background-color: #bae1ff; }
+.letter-f { background-color: #c9c9ff; }
+.letter-g { background-color: #ffbdfc; }
+.letter-h { background-color: #ffccff; }
+.letter-i { background-color: #ffe6f4; }
+.letter-j { background-color: #ffdbdb; }
+.letter-k { background-color: #ffebd2; }
+.letter-l { background-color: #f9ffe2; }
+.letter-m { background-color: #e0ffb3; }
+.letter-n { background-color: #c4ffcc; }
+.letter-o { background-color: #b3d8ff; }
+.letter-p { background-color: #bcc2ff; }
+.letter-q { background-color: #ffccff; }
+.letter-r { background-color: #ffb8cc; }
+.letter-s { background-color: #ffb3b3; }
+.letter-t { background-color: #ffcc99; }
+.letter-u { background-color: #ffff99; }
+.letter-v { background-color: #ccffcc; }
+.letter-w { background-color: #99ccff; }
+.letter-x { background-color: #9999ff; }
+.letter-y { background-color: #ff99ff; }
+.letter-z { background-color: #ff6699; }==== ./src/components/DraggableLetter/DraggableLetter.js ====
 import { useDrag } from 'react-dnd';
 import './DraggableLetter.css';
 
@@ -414,7 +436,7 @@ function DraggableLetter({ letter }) {
   });
 
   // Add dynamic class based on the letter
-  const tileClass = `letter-${letter.toUpperCase()}`;
+  const tileClass = `letter-${letter.toLowerCase()}`;
 
   return (
     <div ref={drag} 
@@ -598,7 +620,7 @@ function LetterPool() {
     return (
         <div className="letter-pool-container">
           <div className="letter-pool">
-            { "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter, index) => {
+            { "abcdefghijklmnopqrstuvwxyz".split("").map((letter, index) => {
                 return <DraggableLetter key={index} letter={letter} />
             })}
           </div>
@@ -609,51 +631,3 @@ function LetterPool() {
 
 
 export default LetterPool;
-==== ./src/docker-compose.yaml ====
-==== ./src/Dockerfile ====
-FROM node:current-alpine3.17
-
-WORKDIR /app
-
-COPY package.json .
-
-RUN npm install
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["npm, start"]==== ./src/index.css ====
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-==== ./src/index.js ====
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./components/App/App.js";
-import 'font-awesome/css/font-awesome.min.css';
-
-// import reportWebVitals from "./reportWebVitals";
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
