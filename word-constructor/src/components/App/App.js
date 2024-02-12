@@ -1,11 +1,16 @@
-import React, { useState,  useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "./App.css";
 import LetterPool from "../LetterPool/LetterPool";
-// import ControlPanel from "../ControlPanel/ControlPanel";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd-multi-backend";
+import { HTML5toTouch } from "rdndmb-html5-to-touch";
 import BoardSpot from "../BoardSpot/BoardSpot";
-// import appleAudio from "../../assets/audio/Apple.m4a";
+import Footer from "../Footer/Footer";
+
+
+// Define the isTouchDevice function
+// function isTouchDevice() {
+//   return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+// }
 
 function App() {
   const words = useMemo(() => [
@@ -17,13 +22,13 @@ function App() {
 
   const [currentWord, setCurrentWord] = useState(words[0]); // Initialize to the first word
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  // const [showHint, setShowHint] = useState(false);
-  // const [isMuted, setIsMuted] = useState(false);
-  // const audioRef = useRef(new Audio(appleAudio));
+
   const [correctCount, setCorrectCount] = useState(0);
   const [placedLetters, setPlacedLetters] = useState(Array(currentWord.length).fill(null));
   const [resetSlots, setResetSlots] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+  // check if touch device
+  // const backend = isTouchDevice() ? TouchBackend() : HTML5Backend;
 
 
   const isWordComplete = useCallback(() => {
@@ -103,30 +108,18 @@ function App() {
   };
   
 
-  // const playAudio = () => {
-  //   audioRef.current.play();
-  //   audioRef.current.onended = () => {
-  //     setShowHint(true);
-  //   };
-  // };
-
-  // const toggleMute = () => {
-  //   setIsMuted((prevMuted) => {
-  //     const nextMuted = !prevMuted;
-  //     audioRef.current.muted = nextMuted;
-  //     return nextMuted;
-  //   });
-  // };
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider options={HTML5toTouch} >
       <div className="app">
-        <div className="correct-header-container">
+      <div className="return-to-portfolio">
+        <a href="https://tomdevspace.netlify.app/" className="return-button">Return to tomdevspace</a>
         </div>
-        {/* {showHint && <div className="hint">Drag the letters to form the word!</div>} */}
-        {/* <ControlPanel playAudio={playAudio} isMuted={isMuted} toggleMute={toggleMute} /> */}
+        <div className="correct-header-container">
+        {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
+        </div>
+       
         <div className="word-slots">
-          <p className="count-display">{correctCount}/{words.length}</p>
           {placedLetters.map((letter, index) => (
             <BoardSpot
               key={index}
@@ -137,11 +130,12 @@ function App() {
             />
           ))}
           <button className="next-button" onClick={selectNextWord}>Next</button>
+          <p className="count-display">{correctCount}/{words.length}</p>
         </div>
         {currentWord && <img src={`/images/fruit/${currentWord.toLowerCase()}.png`} alt={currentWord.trim()} className="word-image" />}
         <LetterPool />
-        {isWordComplete() && <h1 className="correct-header">CORRECT!</h1>}
       </div>
+    <Footer />
     </DndProvider>
   );
 }

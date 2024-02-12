@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 8px;
     gap: 10px;
 }
 
@@ -25,6 +25,9 @@
     border: solid 10px #6fce5f;
     background: #DAD3BB;
     overflow: hidden;
+    width: 5.5rem;
+    height: 9rem;
+    font-size: 2rem;
 }
 
 .slot.incorrect {
@@ -35,3 +38,32 @@
 .tile {
     background: #DAD3BB;
 }
+
+@media screen and (max-width: 480px) {
+    .word-slots {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1px; /* Further reduced gap for smaller screens */
+      padding: 0.2rem;
+    }
+
+    .slot.incorrect {
+      border: 2px dashed #000; /* Slightly thinner border for smaller screens */
+      width: 1.6rem; /* Adjusted width for slots */
+      height: 3rem; /* Adjusted height for slots to maintain aspect ratio */
+      font-size: 2rem; /* Adjust font size if you have text in slots */
+    }
+
+    .slot.correct {
+        border: solid 5px #6fce5f;
+        background: #DAD3BB;
+        overflow: hidden;
+        width: 1.8rem; /* Adjusted width for slots */
+        height: 3.1rem; /* Adjusted height for slots to maintain aspect ratio */
+        font-size: 1rem; /* Adjust font size if you have text in slots */
+    }
+
+    
+}
+

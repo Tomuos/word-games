@@ -89,8 +89,8 @@
         grid-template-columns: repeat(9, 1fr); /* Adjust to ensure three rows are maintained */
     }
     .letter {
-        width: 1.5rem;
-        height: 2rem;
+        width: 1.8rem;
+        height: 3.4rem;
         font-size: 1rem;
     }
     .slot {
@@ -98,6 +98,5 @@
         height: 3rem; /* Make slots square */
     }
 }
-
 
 

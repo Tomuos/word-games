@@ -1,5 +1,38 @@
-.App {
+.app {
   text-align: center;
+  background-color: #A7DBD8; /* Your chosen background color */
+  background-image: url('../../../public/images/jungle-border.png'); /* Adjust the path as needed */
+  background-size: 100vw 100vh; /* Adjust to your needs */
+  background-size: cover; /* Cover the entire screen without repeating */
+  background-repeat: no-repeat; /* Prevent background image from repeating */
+  background-position: center center;
+  padding: 20vh 5vw; /* Add some padding inside the .app container */
+  box-sizing: border-box; /* Include padding in the width and height calculations */
+  /* Other styles */
+}
+
+/* Return Button in CSS */
+.return-to-portfolio {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.return-button {
+  padding: 10px 15px;
+  background-color: #9055ff;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+.return-button:hover {
+  background-color: #4a76f9;
 }
 
 .App-logo {
@@ -40,10 +73,14 @@
 
 .word-slots {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
+  padding: 2vh 0; /* Top and bottom padding to ensure content is within the border */
 }
+
+
 
 .hint {
   color: red;
@@ -88,11 +125,12 @@
 }
 
 .correct-header-container {
-  height: 50px; /* or whatever height you prefer */
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100px; /* Adjust height as needed */
 }
+
 
 .correct-header {
   display: flex;
@@ -114,13 +152,39 @@
   text-align: center;
 }
 
+@keyframes correctAnimation {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.correct-header {
+  animation: correctAnimation 1s ease-in-out forwards;
+  /* Other styling for the correct-header */
+}
+
+
 @media screen and (max-width: 1200px) {
   .word-slots {
     justify-content: space-around; /* Adjust layout */
   }
+  .slot.incorrect {
+    border: 2px dashed #000; /* Slightly thinner border for smaller screens */
+    width: 4.5rem; /* Adjusted width for slots */
+    height: 7rem; /* Adjusted height for slots to maintain aspect ratio */
+    font-size: 2rem; /* Adjust font size if you have text in slots */
+  }
 
   .letter, .slot {
-    width: 4.5rem; /* Adjust tile sizes */
+    width: 3.5rem; /* Adjust tile sizes */
     height: 9rem;
   }
 
@@ -132,17 +196,27 @@
 }
 
 
-@media screen and (max-width: 768px) { /* For tablets */
+@media screen and (max-width: 768px) {
+  /* For tablets and smaller devices */
   .word-slots {
-    flex-direction: column; /* Stack letters vertically */
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Auto-fit for smaller screens */
+    gap: 5px;
   }
 
   .letter, .slot {
-    width: 4rem; /* Smaller size for tiles */
-    height: 8rem;
+    height: 60px; /* Adjust height for smaller devices */
   }
 
-  /* Other adjustments for tablet screens */
+  .correct-header {
+    font-size: 3rem; /* Adjust font size for smaller devices */
+  }
+}
+
+@media screen and (orientation: landscape) {
+  /* For devices in landscape orientation */
+  .word-slots {
+    grid-template-columns: repeat(2, 1fr); /* Have two columns in landscape */
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -184,7 +258,7 @@
   }
 
   .word-image {
-    width: 40vw; /* Scale image to fit within viewport */
+    width: 30vw; /* Scale image to fit within viewport */
     height: auto; /* Maintain aspect ratio */
     margin: 20px auto; /* Add margin for spacing */
   }
@@ -197,4 +271,11 @@
   }
 
   /* You may need to adjust other elements as well */
+}
+
+@media screen and (max-width: 480px) {
+  .App {
+    background-size: auto 100%; /* Adjust the background size for mobile */
+    background-position: center bottom; /* Position the image at the bottom */
+  }
 }

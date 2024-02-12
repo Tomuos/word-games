@@ -1,0 +1,55 @@
+.footer {
+    width: 100%;
+    padding: 15px 0; /* Adjust the padding to control the height of the footer */
+    background-color: #2C3E50; /* A darker shade for the footer, adjust as needed */
+    color: white; /* Footer text color */
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional shadow for depth */
+    position: relative; /* Use relative if you want it to be in the normal document flow, or 'fixed' to stick to the bottom */
+    font-size: 0.8em; /* Adjust the font size as needed */
+    background-image: url('../../../public/images/grassy-footer.png'); /* Adjust the path as needed */
+    background-size: cover; /* Cover the entire area without repeating */
+    background-position: center bottom; /* Position at the bottom center */
+    background-repeat: no-repeat; /* Do not repeat the image */
+}
+
+/* Add a pseudo-element for blur effect */
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    filter: blur(10px); /* Adjust blur as needed */
+    z-index: -1; /* Ensure the blur is behind the content */
+}
+
+/* Add text shadow for better legibility */
+.text-container {
+    position: relative; /* Ensure text is above the blurred pseudo-element */
+    width: 80%; /* Set the width of the container */
+    margin: 0 auto; /* Center the container */
+    font-size: 1rem; /* Adjust the font size as needed */
+    z-index: 2; /* Make sure it's above the pseudo-element created for blur */
+    color: white; /* Set a text color, if not already defined */
+    background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+    padding: 10px; /* Add some padding */
+    backdrop-filter: blur(5px); /* Apply blur effect to the background */
+    -webkit-backdrop-filter: blur(5px); /* For Safari */
+    border-radius: 8px; /* Optional: rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add shadow for depth */
+    text-align: center; /* Align the text inside the container */
+}
+
+
+
+  
+  /* Responsive adjustments for the footer */
+  @media screen and (max-width: 480px) {
+    .footer {
+      padding: 10px 0; /* Smaller padding for smaller screens */
+    }
+  }
+  
