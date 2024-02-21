@@ -1,0 +1,201 @@
+==== ./src/App.css ====
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+==== ./src/App.js ====
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './views/Home';
+import Play from './views/Play';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" exact component={Home} />
+        <Route path="/play" component={Play} />
+        {/* Add more routes as needed */}
+      </Routes>
+    </div>
+  );
+}
+
+export default App;
+==== ./src/assets/.keep ====
+==== ./src/components/AudioRecorder/AudioRecorder.js ====
+==== ./src/components/SpellGame/SpellGame.js ====
+==== ./src/components/WordList/WordList.js ====
+import React from 'react';
+
+function jumbleWord(word) {
+    let shuffledWord = word.split('').sort(() => 0.5 - Math.random()).join('');
+    return shuffledWord;
+}
+
+const words = [
+    {
+        word: "badge",
+        jumbled: jumbleWord("badge"),
+        audio: "path_to_badge_audio.mp3"
+    },
+    {
+        word: "edge",
+        jumbled: jumbleWord("edge"),
+        audio: "path_to_edge_audio.mp3"
+    },
+    {
+        word: "bridge",
+        jumbled: jumbleWord("bridge"),
+        audio: "path_to_bridge_audio.mp3"
+    },
+    {
+        word: "dodge",
+        jumbled: jumbleWord("dodge"),
+        audio: "path_to_dodge_audio.mp3"
+    },
+    {
+        word: "fudge",
+        jumbled: jumbleWord("fudge"),
+        audio: "path_to_fudge_audio.mp3"
+    },
+    {
+        word: "age",
+        jumbled: jumbleWord("age"),
+        audio: "path_to_age_audio.mp3"
+    },
+    {
+        word: "huge",
+        jumbled: jumbleWord("huge"),
+        audio: "path_to_huge_audio.mp3"
+    },
+    {
+        word: "change",
+        jumbled: jumbleWord("change"),
+        audio: "path_to_change_audio.mp3"
+    },
+    {
+        word: "charge",
+        jumbled: jumbleWord("charge"),
+        audio: "path_to_charge_audio.mp3"
+    },
+    {
+        word: "village",
+        jumbled: jumbleWord("village"),
+        audio: "path_to_village_audio.mp3"
+    },
+];
+
+const WordList = () => {
+    return (
+        <div>
+            {words.map((wordData, index) => (
+                <div key={index}>
+                    <p>Original: {wordData.word}</p>
+                    <p>Jumbled: {wordData.jumbled}</p>
+                    <audio controls src={wordData.audio}>
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+export default WordList;
+==== ./src/index.css ====
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+==== ./src/index.js ====
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import './index.css';
+
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById('root')
+);
+==== ./src/views/Home.js ====
+// ./src/views/Home.js
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const Home = () => {
+  return (
+    <div className="App-header">
+      <h1>Welcome to Spell Quest</h1>
+      <p>Improve your spelling through fun and interactive challenges.</p>
+      <Link to="/play" className="App-link">Start Playing</Link>
+    </div>
+  );
+};
+
+export default Home;
+==== ./src/views/Play.js ====
+// ./src/views/Play.js
+
+import React, { useState } from 'react';
+import WordList from '../components/WordList/WordList'; // Assuming WordList exports correctly
+
+const Play = () => {
+  // Implement game logic here, referencing the WordList component for displaying words
+  return (
+    <div className="App-header">
+      <WordList />
+      {/* Add interactive game elements here */}
+    </div>
+  );
+};
+
+export default Play;
